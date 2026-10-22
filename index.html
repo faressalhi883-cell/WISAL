@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHAT ROOM</title>
+    <title>CHAT ROOM - Golden Wood</title>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
+    <!-- الشريط العلوي (المكعبات الخشبية) -->
     <div class="header-container">
         <nav class="top-header">
             <div class="header-right">
                 <h2 class="logo">CHAT ROOM</h2>
             </div>
             <div class="header-left">
-                <!-- زر العين وتأثير الليزر -->
-                <button class="icon-btn eye-btn" onclick="shootLaser(this)" title="رؤية خارقة">
+                <!-- زر العين (رؤية) -->
+                <button class="icon-btn eye-btn" onclick="triggerLightning()" title="رؤية خارقة">
                     <i class="uil uil-eye"></i>
+                    <span class="icon-label">رؤية</span>
                     <span class="laser-beam"></span>
                 </button>
-                <a href="https://wa.me/" target="_blank" class="icon-btn whatsapp"><i class="uil uil-whatsapp"></i></a>
-                <button class="icon-btn"><i class="uil uil-search"></i></button>
-                
-                <!-- صورة الملف الشخصي القابلة للتغيير -->
+
+                <!-- واتساب -->
+                <a href="https://wa.me/" target="_blank" class="icon-btn whatsapp">
+                    <i class="uil uil-whatsapp"></i>
+                    <span class="icon-label">واتساب</span>
+                </a>
+
+                <!-- بحث -->
+                <button class="icon-btn">
+                    <i class="uil uil-search"></i>
+                    <span class="icon-label">بحث</span>
+                </button>
+
+                <!-- صورة الملف الشخصي -->
                 <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
-                <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" id="header-avatar" class="header-avatar" title="تغيير الصورة" onclick="document.getElementById('profile-pic-input').click()">
+                <div class="profile-tab" onclick="document.getElementById('profile-pic-input').click()">
+                    <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" id="header-avatar" class="header-avatar">
+                    <span class="icon-label">حسابي</span>
+                </div>
             </div>
         </nav>
 
+        <!-- التبويبات السفلية للشريط -->
         <div class="mobile-tabs">
             <button class="tab-btn active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
             <button class="tab-btn" onclick="switchTab('reels')"><i class="uil uil-play-circle"></i></button>
@@ -38,10 +54,12 @@
         </div>
     </div>
 
+    <!-- المحتوى الرئيسي -->
     <main class="main-content">
         
-        <!-- 1. قسم الرئيسية -->
+        <!-- 1. قسم الرئيسية (المنشورات) -->
         <section id="home-tab" class="section active">
+            <!-- إنشاء منشور -->
             <div class="create-post">
                 <div class="create-post-top">
                     <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="Profile" class="profile-pic" id="post-avatar">
@@ -50,14 +68,19 @@
                     <label for="image-input" class="icon-only-btn"><i class="uil uil-image"></i></label>
                     <button id="post-btn" class="btn-primary">نشر</button>
                 </div>
+                <!-- معاينة الصورة -->
                 <div id="image-preview-container">
                     <img id="image-preview" src="" alt="Preview">
                 </div>
             </div>
 
-            <!-- القصص -->
+            <!-- شريط القصص -->
             <div class="stories-container">
-                <div class="story-card create-story"><img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="My Profile"><div class="plus-icon"><i class="uil uil-plus"></i></div><p>إنشاء قصة</p></div>
+                <div class="story-card create-story">
+                    <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="My Profile">
+                    <div class="plus-icon"><i class="uil uil-plus"></i></div>
+                    <p>إنشاء قصة</p>
+                </div>
                 <div class="story-card"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=300&fit=crop" alt="Story"><p>ليلى</p></div>
                 <div class="story-card"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=300&fit=crop" alt="Story"><p>أحمد</p></div>
                 <div class="story-card"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=300&fit=crop" alt="Story"><p>سارة</p></div>
@@ -78,6 +101,7 @@
 
         <!-- 3. قسم المحادثات -->
         <section id="chats-tab" class="section">
+            <!-- قائمة المستخدمين -->
             <div id="chat-list-view">
                 <h3 class="section-title">المحادثات</h3>
                 <div id="users-container"></div>
@@ -104,6 +128,10 @@
         </section>
     </main>
 
+    <!-- شاشة البرق (تغطي الشاشة عند الإعجاب أو الرؤية) -->
+    <div id="lightning-overlay"></div>
+
+    <!-- ربط ملف الجافاسكريبت -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
