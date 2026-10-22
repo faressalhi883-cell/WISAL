@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - CHAT ROOM</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body {
+            background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh;
+            background-image: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
+        }
+        .login-box {
+            background: white; padding: 40px 30px; border-radius: 15px; width: 90%; max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center;
+        }
+        .logo { color: #7b2cbf; font-size: 28px; font-weight: 700; margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; font-size: 14px; }
+        .input-group input {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
+            font-family: 'Cairo', sans-serif; outline: none; transition: 0.3s;
+        }
+        .input-group input:focus { border-color: #7b2cbf; box-shadow: 0 0 5px rgba(123, 44, 191, 0.3); }
+        .btn-main {
+            width: 100%; background: #7b2cbf; color: white; padding: 12px; border: none;
+            border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;
+            margin-top: 10px; transition: 0.3s; font-family: 'Cairo', sans-serif;
+        }
+        .btn-main:hover { background: #5a189a; }
+        .toggle-text { margin-top: 15px; font-size: 14px; color: #555; }
+        .toggle-text a { color: #7b2cbf; font-weight: bold; text-decoration: none; cursor: pointer; }
+        .error-msg { color: red; font-size: 13px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <h1 class="logo">CHAT ROOM</h1>
+        
+        <form id="auth-form">
+            <div class="input-group" id="name-group" style="display: none;">
+                <label>الاسم الكامل</label>
+                <input type="text" id="fullname" placeholder="اكتب اسمك هنا">
+            </div>
+            <div class="input-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="email" placeholder="example@email.com" required>
+            </div>
+            <div class="input-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="password" placeholder="********" required>
+            </div>
+            
+            <button type="submit" class="btn-main" id="submit-btn">تسجيل الدخول</button>
+            <p class="error-msg" id="error-msg"></p>
+        </form>
+
+        <p class="toggle-text" id="toggle-msg">
+            ليس لديك حساب؟ <a id="toggle-btn">إنشاء حساب جديد</a>
+        </p>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+</body>
+</html>
