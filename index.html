@@ -15,9 +15,17 @@
                 <h2 class="logo">CHAT ROOM</h2>
             </div>
             <div class="header-left">
-                <a href="https://wa.me/" target="_blank" class="icon-btn whatsapp" title="واتساب"><i class="uil uil-whatsapp"></i></a>
+                <!-- زر العين وتأثير الليزر -->
+                <button class="icon-btn eye-btn" onclick="shootLaser(this)" title="رؤية خارقة">
+                    <i class="uil uil-eye"></i>
+                    <span class="laser-beam"></span>
+                </button>
+                <a href="https://wa.me/" target="_blank" class="icon-btn whatsapp"><i class="uil uil-whatsapp"></i></a>
                 <button class="icon-btn"><i class="uil uil-search"></i></button>
-                <button class="icon-btn"><i class="uil uil-plus-circle"></i></button>
+                
+                <!-- صورة الملف الشخصي القابلة للتغيير -->
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+                <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" id="header-avatar" class="header-avatar" title="تغيير الصورة" onclick="document.getElementById('profile-pic-input').click()">
             </div>
         </nav>
 
@@ -27,20 +35,19 @@
             <button class="tab-btn" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
             <button class="tab-btn" onclick="switchTab('groups')"><i class="uil uil-users-alt"></i></button>
             <button class="tab-btn" id="theme-toggle"><i class="uil uil-moon"></i></button>
-            <button class="tab-btn"><i class="uil uil-bell"></i></button>
-            <div class="tab-btn profile-tab"><img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="Profile"></div>
         </div>
     </div>
 
     <main class="main-content">
         
+        <!-- 1. قسم الرئيسية -->
         <section id="home-tab" class="section active">
             <div class="create-post">
                 <div class="create-post-top">
-                    <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="Profile" class="profile-pic">
+                    <img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="Profile" class="profile-pic" id="post-avatar">
                     <input type="text" placeholder="بم تفكر؟" id="create-post-input">
                     <input type="file" id="image-input" accept="image/*" style="display: none;">
-                    <label for="image-input" class="btn-primary icon-only-btn"><i class="uil uil-image"></i></label>
+                    <label for="image-input" class="icon-only-btn"><i class="uil uil-image"></i></label>
                     <button id="post-btn" class="btn-primary">نشر</button>
                 </div>
                 <div id="image-preview-container">
@@ -48,6 +55,7 @@
                 </div>
             </div>
 
+            <!-- القصص -->
             <div class="stories-container">
                 <div class="story-card create-story"><img src="https://ui-avatars.com/api/?name=User&background=7b2cbf&color=fff" alt="My Profile"><div class="plus-icon"><i class="uil uil-plus"></i></div><p>إنشاء قصة</p></div>
                 <div class="story-card"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=300&fit=crop" alt="Story"><p>ليلى</p></div>
@@ -55,9 +63,11 @@
                 <div class="story-card"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=300&fit=crop" alt="Story"><p>سارة</p></div>
             </div>
 
+            <!-- حاوية المنشورات -->
             <div class="feeds" id="feeds-container"></div>
         </section>
 
+        <!-- 2. قسم الريلز -->
         <section id="reels-tab" class="section">
             <h3 class="section-title">الريلز والفيديوهات</h3>
             <div class="reels-grid">
@@ -66,11 +76,14 @@
             </div>
         </section>
 
+        <!-- 3. قسم المحادثات -->
         <section id="chats-tab" class="section">
             <div id="chat-list-view">
                 <h3 class="section-title">المحادثات</h3>
                 <div id="users-container"></div>
             </div>
+
+            <!-- واجهة الدردشة -->
             <div id="chat-room-view">
                 <div class="chat-header">
                     <button onclick="closeChatRoom()" class="icon-btn"><i class="uil uil-arrow-right"></i></button>
@@ -84,6 +97,7 @@
             </div>
         </section>
 
+        <!-- 4. قسم المجموعات -->
         <section id="groups-tab" class="section">
             <h3 class="section-title">المجموعات</h3>
             <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">لا توجد مجموعات حالياً</p>
