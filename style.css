@@ -189,3 +189,47 @@ body {
 .message.received { align-self: flex-start; background: #1f140d; color: var(--gold); border: 1px solid #3d2918; }
 .chat-input-area { display: flex; gap: 10px; padding: 15px; border-top: 2px solid var(--wood-dark); }
 .chat-input-area input { flex: 1; padding: 12px; border-radius: 2px; border: none; background: #1f140d; color: #fff; box-shadow: inset 3px 3px 8px #000; }
+/* ================= قسم الألعاب ================= */
+.games-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+.game-card {
+    background: linear-gradient(135deg, var(--wood-base), #352316);
+    border: 3px solid var(--wood-dark);
+    border-radius: var(--border-radius);
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 5px 5px 0px #1a100a, inset 0 0 20px rgba(0,0,0,0.5); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: woodFloat 5s infinite ease-in-out; 
+}
+
+.game-card:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px #1a100a;
+}
+
+.game-card i {
+    font-size: 40px;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.game-card h4 {
+    color: var(--gold);
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.game-card p {
+    color: var(--text-muted);
+    font-size: 12px;
+}
