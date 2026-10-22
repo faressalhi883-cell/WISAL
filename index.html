@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CHAT ROOM - Urban Edition</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#e8c547">
+</head>
+<body oncontextmenu="return false;">
 
+    <!-- الشريط العلوي -->
+    <div class="header-container">
+        <nav class="top-header">
+            <div class="header-right">
+                <h2 class="logo">CHAT ROOM</h2>
+            </div>
+            <div class="header-left">
+                <!-- زر العين (رؤية) -->
+                <button class="icon-btn eye-btn" onclick="triggerLightning()" title="رؤية خارقة">
+                    <i class="uil uil-eye"></i>
+                    <span class="icon-label">رؤية</span>
+                    <span class="laser-beam"></span>
+                </button>
+                <!-- واتساب -->
+                <a href="https://wa.me/" target="_blank" class="icon-btn whatsapp">
+                    <i class="uil uil-whatsapp"></i>
+                    <span class="icon-label">واتساب</span>
+                </a>
+                <!-- بحث -->
+                <button class="icon-btn">
+                    <i class="uil uil-search"></i>
+                    <span class="icon-label">بحث</span>
+                </button>
+                <!-- صورة الملف الشخصي -->
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+                <div class="profile-tab" onclick="document.getElementById('profile-pic-input').click()">
+                    <img src="https://ui-avatars.com/api/?name=User&background=333&color=e8c547" id="header-avatar" class="header-avatar">
+                    <span class="icon-label">حسابي</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- التبويبات السفلية للشريط -->
+        <div class="mobile-tabs">
+            <button class="tab-btn active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
+            <button class="tab-btn" onclick="switchTab('reels')"><i class="uil uil-play-circle"></i></button>
+            <button class="tab-btn" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
+            <button class="tab-btn" onclick="switchTab('groups')"><i class="uil uil-users-alt"></i></button>
+            <!-- زر الألعاب -->
+            <button class="tab-btn" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
+            <button class="tab-btn" id="theme-toggle"><i class="uil uil-moon"></i></button>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        
+        <!-- 1. قسم الرئيسية -->
+        <section id="home-tab" class="section active">
+            <div class="create-post">
+                <div class="create-post-top">
+                    <img src="https://ui-avatars.com/api/?name=User&background=333&color=e8c547" alt="Profile" class="profile-pic" id="post-avatar">
+                    <input type="text" placeholder="بم تفكر؟" id="create-post-input">
+                    <input type="file" id="image-input" accept="image/*" style="display: none;">
+                    <label for="image-input" class="icon-only-btn"><i class="uil uil-image"></i></label>
+                    <button id="post-btn" class="btn-primary">نشر</button>
+                </div>
+                <div id="image-preview-container">
+                    <img id="image-preview" src="" alt="Preview">
+                </div>
+            </div>
+
+            <!-- شريط القصص -->
+            <div class="stories-container">
+                <div class="story-card create-story">
+                    <img src="https://ui-avatars.com/api/?name=User&background=333&color=e8c547" alt="My Profile">
+                    <div class="plus-icon"><i class="uil uil-plus"></i></div>
+                    <p>إنشاء قصة</p>
+                </div>
+                <div class="story-card"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=300&fit=crop" alt="Story"><p>ليلى</p></div>
+                <div class="story-card"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=300&fit=crop" alt="Story"><p>أحمد</p></div>
+                <div class="story-card"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=300&fit=crop" alt="Story"><p>سارة</p></div>
+            </div>
+
+            <!-- حاوية المنشورات -->
+            <div class="feeds" id="feeds-container"></div>
+        </section>
+
+        <!-- 2. قسم الريلز -->
+        <section id="reels-tab" class="section">
+            <h3 class="section-title">الريلز والفيديوهات</h3>
+            <div class="reels-grid">
+                <div class="reel"><img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=600&fit=crop"><i class="uil uil-play-circle"></i></div>
+                <div class="reel"><img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=400&h=600&fit=crop"><i class="uil uil-play-circle"></i></div>
+            </div>
+        </section>
+
+        <!-- 3. قسم المحادثات -->
+        <section id="chats-tab" class="section">
+            <div id="chat-list-view">
+                <h3 class="section-title">المحادثات</h3>
+                <div id="users-container"></div>
+            </div>
+
+            <div id="chat-room-view">
+                <div class="chat-header">
+                    <button onclick="closeChatRoom()" class="icon-btn"><i class="uil uil-arrow-right"></i></button>
+                    <h4 id="chat-with-name">محادثة</h4>
+                </div>
+                <div id="messages-container"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="message-input" placeholder="اكتب رسالة...">
+                    <button id="send-message-btn" class="btn-primary">إرسال</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. قسم المجموعات -->
+        <section id="groups-tab" class="section">
+            <h3 class="section-title">المجموعات</h3>
+            <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">لا توجد مجموعات حالياً</p>
+        </section>
+
+        <!-- 5. قسم الألعاب -->
+        <section id="games-tab" class="section">
+            <h3 class="section-title">مركز الألعاب</h3>
+            <div class="games-grid">
+                
+                <!-- النافذة الذهبية الكبيرة (مكتبة الألعاب) -->
+                <div class="game-card" onclick="openGame('https://sausi-7.github.io/games/', 'مكتبة الألعاب')" style="grid-column: span 2; background: linear-gradient(135deg, #e8c547, #b8860b); border-color: #e8c547; box-shadow: 0 0 15px rgba(232,197,71,0.3);">
+                    <i class="uil uil-game-structure" style="color: #1a1a1a;"></i>
+                    <h4 style="color: #1a1a1a; text-shadow: none;">مكتبة الألعاب</h4>
+                    <p style="color: #333; font-weight: bold;">اضغط هنا للعب (163 لعبة)</p>
+                </div>
+
+                <!-- نافذة لعبة النسخ -->
+                <div class="game-card" onclick="openGame('./games/copy/index.html', 'لعبة النسخ')">
+                    <i class="uil uil-copy"></i>
+                    <h4>لعبة النسخ</h4>
+                    <p>تطابق البطاقات</p>
+                </div>
+                
+                <!-- نافذة معركة الدبابات -->
+                <div class="game-card" onclick="openGame('./games/tank/index.html', 'معركة الدبابات')">
+                    <i class="uil uil-dizzy-meh"></i>
+                    <h4>معركة الدبابات</h4>
+                    <p>حرب مدرعات</p>
+                </div>
+                
+                <!-- نافذة القناص -->
+                <div class="game-card" onclick="openGame('./games/sniper/index.html', 'القناص')">
+                    <i class="uil uil-crosshairs"></i>
+                    <h4>القناص</h4>
+                    <p>تصويب دقيق</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- شاشة البرق (تغطي الشاشة عند الإعجاب أو الرؤية) -->
+    <div id="lightning-overlay"></div>
+
+    <!-- شاشة عرض اللعبة (تفتح فوق كل شيء) -->
+    <div id="game-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:999999; flex-direction:column;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:#1a1a1a; border-bottom:2px solid #e8c547;">
+            <h3 id="game-title" style="color:#e8c547; margin:0; font-family:'Cairo', sans-serif;">اسم اللعبة</h3>
+            <button onclick="closeGame()" style="background:#333; color:#e8c547; border:1px solid #e8c547; padding:5px 15px; border-radius:4px; font-family:'Cairo', sans-serif; font-weight:bold; cursor:pointer;">إغلاق X</button>
+        </div>
+        <iframe id="game-frame" src="" style="flex:1; width:100%; border:none; background:#000;"></iframe>
+    </div>
+
+    <!-- ربط ملف الجافاسكريبت -->
+    <script type="module" src="script.js"></script>
+    
+    <!-- ربط التطبيق (PWA) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => console.log('ServiceWorker registered'))
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+    </script>
+
+</body>
+</html>
