@@ -50,6 +50,7 @@
             <button class="tab-btn" onclick="switchTab('reels')"><i class="uil uil-play-circle"></i></button>
             <button class="tab-btn" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
             <button class="tab-btn" onclick="switchTab('groups')"><i class="uil uil-users-alt"></i></button>
+            <button class="tab-btn" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
             <button class="tab-btn" id="theme-toggle"><i class="uil uil-moon"></i></button>
         </div>
     </div>
@@ -126,6 +127,27 @@
             <h3 class="section-title">المجموعات</h3>
             <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">لا توجد مجموعات حالياً</p>
         </section>
+        <!-- 5. قسم الألعاب -->
+<section id="games-tab" class="section">
+    <h3 class="section-title">مركز الألعاب</h3>
+    <div class="games-grid">
+        <div class="game-card" onclick="openGame('./games/plane/index.html', 'حرب الطائرات')">
+            <i class="uil uil-rocket"></i>
+            <h4>حرب الطائرات</h4>
+            <p>دمر الأعداء</p>
+        </div>
+        <div class="game-card" onclick="openGame('./games/tank/index.html', 'معركة الدبابات')">
+            <i class="uil uil-dizzy-meh"></i>
+            <h4>معركة الدبابات</h4>
+            <p>حرب مدرعات</p>
+        </div>
+        <div class="game-card" onclick="openGame('./games/sniper/index.html', 'القناص')">
+            <i class="uil uil-crosshairs"></i>
+            <h4>القناص</h4>
+            <p>تصويب دقيق</p>
+        </div>
+    </div>
+</section>
     </main>
 
     <!-- شاشة البرق (تغطي الشاشة عند الإعجاب أو الرؤية) -->
