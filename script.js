@@ -202,4 +202,4 @@ window.closeChatRoom = function() {
     if (unsubscribeMessages) unsubscribeMessages();
     currentChatId = null;
 };
-alert("ملف الجافاسكريبت يعمل!");
+
