@@ -11,7 +11,19 @@
     --border-radius: 4px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    user-select: none !important;
+}
+input, textarea, .feed-content p, .message {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+}
 
 html { scroll-behavior: smooth; }
 
