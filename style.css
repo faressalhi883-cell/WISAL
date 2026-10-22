@@ -118,28 +118,9 @@ body {
 .btn-primary { background: #8b0000; color: var(--gold); border: 2px solid #3d0000; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 4px 4px 0px #3d0000; transition: 0.1s; white-space: nowrap; }
 .btn-primary:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px #3d0000; }
 
-/* ================= إصلاح عرض الصورة ================= */
-/* معاينة الصورة قبل النشر */
+/* معاينة الصورة */
 #image-preview-container { display: none; margin-top: 15px; text-align: center; }
-#image-preview { 
-    max-width: 100%; 
-    max-height: 200px; 
-    border-radius: 4px; 
-    border: 2px solid var(--wood-dark); 
-    box-shadow: 3px 3px 0px #1a100a; 
-    object-fit: contain; /* يضمن ظهور الصورة كاملة داخل الإطار */
-}
-
-/* الصورة داخل المنشور (بعد النشر) */
-.feed-img { 
-    width: 100%; 
-    max-height: 400px; /* يحدد أقصى ارتفاع للصورة حتى لا تأخذ الشاشة كلها */
-    object-fit: cover; /* يقتص الصورة بشكل جميل لتناسب الإطار */
-    border-radius: 4px; 
-    margin-top: 10px; 
-    border: 3px solid var(--wood-dark); 
-    box-shadow: 3px 3px 0 #000; 
-}
+#image-preview { max-width: 100%; max-height: 200px; border-radius: 4px; border: 3px solid var(--wood-dark); box-shadow: 5px 5px 0px #1a100a; object-fit: contain; }
 
 /* القصص */
 .stories-container { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
@@ -161,9 +142,41 @@ body {
 .feed-info h4 { font-size: 16px; color: var(--gold); } 
 .feed-info span { font-size: 12px; color: var(--text-muted); }
 .feed-content { padding: 15px 0; font-size: 15px; line-height: 1.6; color: #e8dacb; }
+.feed-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 4px; margin-top: 10px; border: 3px solid var(--wood-dark); box-shadow: 3px 3px 0 #000; }
 .feed-actions { display: flex; justify-content: space-between; padding-top: 10px; border-top: 2px dashed var(--wood-light); }
 .feed-actions button { background: none; border: none; color: var(--text-muted); font-size: 14px; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: 0.2s; }
 .feed-actions button:active { color: var(--gold); text-shadow: 0 0 5px #ffd700; transform: scale(0.9); }
+
+/* ================= قسم الريلز (تم إصلاحه) ================= */
+.reels-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
+    width: 100%; 
+    padding-bottom: 20px;
+}
+.reel { 
+    position: relative; 
+    aspect-ratio: 9/16; /* يجعل الفيديو عمودياً مثل تيك توك */
+    border-radius: var(--border-radius); 
+    overflow: hidden; 
+    border: 3px solid var(--wood-dark); 
+    box-shadow: 5px 5px 0px #1a100a; 
+    animation: woodFloat 4s infinite ease-in-out alternate;
+}
+.reel img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* يمنع الصورة من التمدد */
+}
+.reel i { 
+    position: absolute; 
+    top: 50%; left: 50%; 
+    transform: translate(-50%, -50%); 
+    color: rgba(255,255,255,0.8); 
+    font-size: 40px; 
+    text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
 
 /* المحادثات */
 .chat-item { display: flex; align-items: center; gap: 15px; padding: 15px; cursor: pointer; }
