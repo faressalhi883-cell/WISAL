@@ -11,7 +11,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- الشريط العلوي -->
     <header>
         <div class="topline">
             <div class="header-icons">
@@ -37,15 +36,14 @@
         </div>
     </header>
 
-    <!-- شريط التبويبات العلوي -->
     <div class="tabs">
         <button class="active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
         <button onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
         <button onclick="switchTab('friends')"><i class="uil uil-users-alt"></i></button>
-        <button data-toast="الفيديوهات قريباً"><i class="uil uil-play-circle"></i></button>
+        <button onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
     </div>
 
-    <!-- 1. قسم الرئيسية (المنشورات) -->
+    <!-- 1. قسم الرئيسية -->
     <main id="home-section" style="display: block;">
         <div class="composer">
             <div class="compose-top">
@@ -61,15 +59,6 @@
                 <img id="image-preview" src="" style="width:100%; border-radius:12px;" alt="Preview">
             </div>
         </div>
-
-        <div class="section-title"><span>القصص</span><small>شارك لحظاتك ✨</small></div>
-        <div class="stories">
-            <div class="story create-story"><div class="story-img"><i class="uil uil-plus"></i></div><span>إضافة</span></div>
-            <div class="story"><div class="savatar">س</div><span>سارة</span></div>
-            <div class="story"><div class="savatar">أ</div><span>أحمد</span></div>
-            <div class="story"><div class="savatar">ل</div><span>ليلى</span></div>
-        </div>
-
         <div class="section-title"><span>آخر المنشورات</span></div>
         <div id="feeds-container" class="feeds-list"></div>
     </main>
@@ -114,53 +103,67 @@
         <div id="my-posts-container" class="feeds-list"></div>
     </main>
 
+    <!-- 5. قسم مكتبة الألعاب الخارجية (الجديد) -->
+    <main id="games-section" style="display: none;">
+        <section class="intro">
+            <h1>🎮 ألعاب مجانية فقط</h1>
+            <p>روابط لفئات ألعاب مجانية يمكنك تشغيلها من متصفح الهاتف، دون شراء اللعبة أو تنزيلها.</p>
+        </section>
+        
+        <input class="search" id="search" type="search" placeholder="ابحث عن فئة..." aria-label="ابحث عن فئة">
+        
+        <nav class="filters" aria-label="فئات الألعاب">
+            <button class="filter active" data-category="all">الكل</button>
+            <button class="filter" data-category="cars">🚗 سيارات</button>
+            <button class="filter" data-category="flight">✈️ طيران</button>
+            <button class="filter" data-category="brain">🧠 ألغاز</button>
+            <button class="filter" data-category="action">⚡ أكشن</button>
+        </nav>
+
+        <section class="grid" id="games">
+            <article class="game" data-category="cars" data-search="سيارات قيادة سباق car racing driving">
+                <div class="art">🏎️</div>
+                <div class="info"><h2>السيارات والقيادة</h2><p>سباقات وقيادة ومواقف سيارات.</p><a class="play" href="https://poki.com/en/car" target="_blank">العب مجانًا ↗</a></div>
+            </article>
+            <article class="game" data-category="flight" data-search="طيران طائرات airplane flight simulator">
+                <div class="art">✈️</div>
+                <div class="info"><h2>الطيران والطائرات</h2><p>اكتشف ألعاب الطيران والمحاكاة.</p><a class="play" href="https://www.crazygames.com/t/airplane" target="_blank">اكتشف ↗</a></div>
+            </article>
+            <article class="game" data-category="brain" data-search="ذكاء ألغاز puzzle brain logic">
+                <div class="art">🧩</div>
+                <div class="info"><h2>الذكاء والألغاز</h2><p>حل الألغاز واختبر المنطق.</p><a class="play" href="https://poki.com/en/puzzle" target="_blank">العب ↗</a></div>
+            </article>
+            <article class="game" data-category="action" data-search="أكشن مغامرة action adventure">
+                <div class="art">⚡</div>
+                <div class="info"><h2>الأكشن والمغامرة</h2><p>ألعاب حركة ومهارة.</p><a class="play" href="https://poki.com/en/action" target="_blank">اكتشف ↗</a></div>
+            </article>
+            <article class="game" data-category="action" data-search="كريزي جيمز ألعاب مجانية crazygames free">
+                <div class="art">🎮</div>
+                <div class="info"><h2>المزيد من الألعاب</h2><p>مجموعة إضافية من الألعاب المجانية.</p><a class="play" href="https://www.crazygames.com/" target="_blank">تصفح ↗</a></div>
+            </article>
+            <article class="game" data-category="all" data-search="بوكي ألعاب مجانية poki">
+                <div class="art">🌍</div>
+                <div class="info"><h2>مكتبة ألعاب متنوعة</h2><p>تصفح فئات مختلفة واختر اللعبة.</p><a class="play" href="https://poki.com/" target="_blank">افتح ↗</a></div>
+            </article>
+        </section>
+    </main>
+
     <!-- الشريط السفلي -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('home')"><i class="uil uil-estate"></i><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i><span>الأصدقاء</span></button>
-        <button class="nav-item fab-btn" id="plusBtn"><i class="uil uil-plus"></i></button>
+        <!-- الزر العائم للألعاب -->
+        <button class="nav-item fab-btn" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
         <button class="nav-item" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i><span>الدردشة</span></button>
         <button class="nav-item" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>ملفي</span></button>
     </nav>
-
-    <!-- قائمة الألعاب -->
-    <div class="plus-menu" id="plusMenu" hidden>
-        <div class="plus-menu-card">
-            <div class="plus-menu-head">
-                <strong>مركز الألعاب</strong>
-                <button class="iconbtn" id="closePlus" style="width:30px;height:30px;"><i class="uil uil-times"></i></button>
-            </div>
-            <div class="plus-grid">
-                <!-- هنا تم تصحيح مسار دادوسا ليفتح الملف الجديد -->
-                <button class="game-tile" onclick="openGame('./dadousa.html', 'دادوسا')"><i class="uil uil-dice-four"></i><span>دادوسا</span></button>
-                <button onclick="openGame('./games/copy/index.html', 'النسخ')"><i class="uil uil-copy"></i><span>النسخ</span></button>
-                <button onclick="openGame('./games/tank/index.html', 'الدبابات')"><i class="uil uil-dizzy-meh"></i><span>الدبابات</span></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة اللعبة -->
-    <div class="game-modal" id="gameModal" hidden>
-        <div class="game-header">
-            <h3 id="gameTitle">اللعبة</h3>
-            <button onclick="closeGame()">إغلاق X</button>
-        </div>
-        <iframe id="gameFrame" src=""></iframe>
-    </div>
 
     <div id="lightning-overlay"></div>
     <div class="toast" id="toast"></div>
 
     <script type="module" src="script.js"></script>
     <script>
-        // سكريبت الواجهة (التنقل، الألعاب، البرق، القوائم)
-        const plusBtn = document.getElementById('plusBtn');
-        const plusMenu = document.getElementById('plusMenu');
-        const closePlus = document.getElementById('closePlus');
-        
-        plusBtn.addEventListener('click', () => { plusMenu.hidden = !plusMenu.hidden; });
-        closePlus.addEventListener('click', () => { plusMenu.hidden = true; });
-
+        // سكريبت الواجهة
         window.switchTab = function(tab) {
             document.querySelectorAll('main').forEach(m => m.style.display = 'none');
             document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'));
@@ -180,19 +183,12 @@
                 document.getElementById('profile-section').style.display = 'block';
                 document.querySelectorAll('.bottom-nav .nav-item')[4].classList.add('active');
                 if(typeof loadProfile === 'function') loadProfile();
+            } else if (tab === 'games') {
+                document.getElementById('games-section').style.display = 'block';
+                document.querySelectorAll('.bottom-nav .nav-item')[2].classList.add('active');
             }
         };
 
-        window.openGame = function(url, title) {
-            document.getElementById('gameTitle').innerText = title;
-            document.getElementById('gameFrame').src = url;
-            document.getElementById('gameModal').hidden = false;
-            plusMenu.hidden = true;
-        };
-        window.closeGame = function() {
-            document.getElementById('gameFrame').src = "";
-            document.getElementById('gameModal').hidden = true;
-        };
         window.triggerLightning = function() {
             const overlay = document.getElementById('lightning-overlay');
             overlay.classList.remove('strike');
@@ -200,6 +196,7 @@
             overlay.classList.add('strike');
             if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         };
+
         document.querySelectorAll('[data-toast]').forEach(el => {
             el.addEventListener('click', () => {
                 const t = document.getElementById('toast');
@@ -208,6 +205,29 @@
                 setTimeout(() => t.classList.remove('show'), 2000);
             });
         });
+
+        // تشغيل فلاتر البحث الخاصة بالألعاب
+        const buttons = [...document.querySelectorAll('.filter')];
+        const cards = [...document.querySelectorAll('.game')];
+        const search = document.getElementById('search');
+        let category = 'all';
+
+        function updateGames() {
+            if(!search) return;
+            const q = search.value.trim().toLowerCase();
+            cards.forEach(card => {
+                card.style.display = (category === 'all' || card.dataset.category === category) && 
+                (card.dataset.search + ' ' + card.innerText).toLowerCase().includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        buttons.forEach(btn => btn.addEventListener('click', () => {
+            category = btn.dataset.category;
+            buttons.forEach(b => b.classList.toggle('active', b === btn));
+            updateGames();
+        }));
+        if(search) search.addEventListener('input', updateGames);
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
         }
