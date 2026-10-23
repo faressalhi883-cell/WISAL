@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chatroom-v110';
+const CACHE_NAME = 'chatroom-v135';
 const urlsToCache = [
   './',
   './index.html',
