@@ -264,3 +264,47 @@ function loadProfile() {
         });
     });
 }
+// ================== تفعيل أزرار الشريط العلوي والبحث ==================
+
+// 1. زر القائمة (تسجيل الخروج)
+document.getElementById('menu-btn')?.addEventListener('click', () => {
+    if(confirm("هل أنت متأكد من تسجيل الخروج؟")) {
+        signOut(auth).then(() => {
+            window.location.href = './login.html';
+        });
+    }
+});
+
+// 2. زر الإشعارات
+document.getElementById('notif-btn')?.addEventListener('click', () => {
+    const t = document.getElementById('toast');
+    if(t) { 
+        t.innerText = 'لا توجد إشعارات جديدة 🔔'; 
+        t.classList.add('show'); 
+        setTimeout(() => t.classList.remove('show'), 2000); 
+    }
+});
+
+// 3. دالة البحث
+const performSearch = () => {
+    const query = prompt("ابحث عن كلمة في المنشورات:");
+    if(query !== null && query.trim() !== "") {
+        const feeds = document.querySelectorAll('#feeds-container .feed');
+        let found = 0;
+        feeds.forEach(feed => {
+            if(feed.innerText.includes(query)) {
+                feed.style.display = 'block';
+                found++;
+            } else {
+                feed.style.display = 'none';
+            }
+        });
+        if(found === 0) alert("لم يتم العثور على أي منشور يحتوي على هذه الكلمة.");
+    } else if (query === "") {
+        document.querySelectorAll('#feeds-container .feed').forEach(feed => feed.style.display = 'block');
+    }
+};
+
+// ربط زر البحث العلوي وزر البحث السريع
+document.getElementById('top-search-btn')?.addEventListener('click', performSearch);
+document.getElementById('quick-search-btn')?.addEventListener('click', performSearch);
