@@ -1,1 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 
+:root {
+    --bg: #160d09;
+    --panel: #28170f;
+    --panel2: #352015;
+    --gold: #ffd65a;
+    --gold2: #b77a24;
+    --purple: #8b20e8;
+    --purple2: #bc58ff;
+    --text: #fff4df;
+    --muted: #bca995;
+    --line: #69462b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background: radial-gradient(ellipse at 50% -10%, #684022 0, #24140d 42%, #100906 100%); color: var(--text); min-height: 100vh; padding-bottom: 92px; direction: rtl; overflow-x: hidden; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+.app { max-width: 760px; margin: auto; overflow: hidden; }
+
+/* --- الشريط العلوي --- */
+header { padding: 20px 16px 16px; background: linear-gradient(145deg, #42291a, #24140d 75%); border-bottom: 1px solid #714b29; box-shadow: 0 12px 28px #0008; }
+.topline { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.logo { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: linear-gradient(145deg, #a22cff, #5a119a); border: 2px solid var(--gold); box-shadow: 0 0 0 3px #6d3d20, 0 8px 20px #0008; color: #fff; font-weight: 900; font-size: 18px; position: relative; }
+.logo::after { content: '👑'; position: absolute; top: -12px; font-size: 16px; }
+.brand { flex: 1; }
+.brand h1 { margin: 0; color: var(--gold); font-size: clamp(20px, 5vw, 28px); letter-spacing: 1px; text-shadow: 0 2px 0 #71420b, 0 0 16px #ffbd3d55; }
+.brand p { margin: 3px 0 0; color: #d8c2ad; font-size: 12px; }
+.iconbtn { width: 44px; height: 44px; border: 1px solid #7a5434; border-radius: 13px; background: linear-gradient(145deg, #4c3020, #20120c); box-shadow: 4px 5px 0 #100905, inset 1px 1px 2px #ffffff22; font-size: 20px; display: flex; justify-content: center; align-items: center; color: var(--muted); }
+.iconbtn:active { transform: translateY(3px); box-shadow: 1px 2px 0 #100905; }
+
+/* القائمة السريعة */
+.quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.quick button, .quick a { aspect-ratio: 1/1; border: 1px solid #765032; border-radius: 15px; background: linear-gradient(145deg, #513522, #28170f); box-shadow: 5px 6px 0 #120a06, inset 1px 1px 3px #ffffff25; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--gold); font-weight: 800; font-size: 13px; text-decoration: none; }
+.quick button i, .quick a i { font-size: 25px; color: #fff0d0; }
+.quick button:active, .quick a:active { transform: translateY(3px); box-shadow: 1px 2px 0 #100905; }
+
+/* شريط التبويبات (أعلى المحتوى) */
+.tabs { display: flex; overflow-x: auto; gap: 0; background: #1d100a; border-bottom: 1px solid #59391f; }
+.tabs button { flex: 1; min-width: 58px; padding: 16px 8px; border: 0; border-left: 1px solid #432819; background: linear-gradient(#382317,#21120b); font-size: 23px; color: #c9b49b; }
+.tabs button.active { color: var(--gold); background: linear-gradient(#56361f,#2c190f); box-shadow: inset 0 -3px var(--gold); }
+
+/* المحتوى الرئيسي */
+main { padding: 18px 14px; display: grid; gap: 18px; }
+
+/* إنشاء منشور */
+.composer { border: 1px solid #5a3a24; border-radius: 20px; background: linear-gradient(145deg, #382317, #21120c); box-shadow: 8px 9px 0 #100905, inset 1px 1px 2px #ffffff12; padding: 14px; }
+.compose-row { display: flex; align-items: center; gap: 10px; background: #170d09; border: 1px solid #54351f; border-radius: 12px; padding: 5px 10px; margin-bottom: 12px; }
+.avatar { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #a82aff, #6416a7); border: 2px solid #dca6ff; color: #fff; font-weight: 900; font-size: 16px; box-shadow: 3px 4px 0 #100905; }
+.composer input { min-width: 0; flex: 1; background: transparent; color: #fff; border: none; padding: 12px 0; outline: none; }
+.actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn { border: 1px solid #7a542f; border-radius: 12px; padding: 10px 15px; background: linear-gradient(145deg, #50331f, #2a180f); box-shadow: 3px 4px 0 #120905; color: var(--gold); font-weight: 800; display: flex; align-items: center; gap: 5px; font-size: 14px; }
+.btn.primary { background: linear-gradient(145deg, #b82dff, #6813b3); border-color: #d78bff; color: white; box-shadow: 0 0 18px #a331f344, 4px 5px 0 #120905; }
+.btn:active { transform: translateY(3px); box-shadow: none; }
+
+/* القصص */
+.section-title { display: flex; align-items: center; justify-content: space-between; margin: 0 2px; color: var(--gold); font-size: 16px; font-weight: bold; }
+.section-title small { color: var(--muted); font-size: 12px; font-weight: normal; }
+.stories { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 10px; scrollbar-width: none; }
+.stories::-webkit-scrollbar { display: none; }
+.story { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 70px; cursor: pointer; }
+.story-img { width: 60px; height: 60px; border-radius: 50%; padding: 2px; border: 2px solid var(--gold); display: flex; justify-content: center; align-items: center; background: var(--panel); }
+.story-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.story .savatar { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--gold); background: #26142f; font-weight: 800; font-size: 20px; }
+.story strong { font-size: 12px; color: var(--text); font-weight: 600; }
+.create-story .story-img { background: transparent; border: 2px dashed var(--muted); }
+.create-story .story-img i { font-size: 24px; color: var(--gold); }
+
+/* المنشورات */
+#feeds-container { display: flex; flex-direction: column; gap: 18px; }
+.post, .feed { padding: 14px; overflow: hidden; border: 1px solid #5a3a24; border-radius: 20px; background: linear-gradient(145deg, #382317, #21120c); box-shadow: 8px 9px 0 #100905, inset 1px 1px 2px #ffffff12; }
+.posthead, .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.posthead .avatar, .feed-header .profile-pic { border-radius: 50%; width: 45px; height: 45px; object-fit: cover; border: 2px solid var(--purple); }
+.who, .feed-info { flex: 1; }
+.who strong, .feed-info h4 { display: block; color: var(--gold); font-size: 15px; }
+.who small, .feed-info span { color: var(--muted); font-size: 12px; }
+.more { background: none; border: 0; color: #bca995; font-size: 20px; }
+.post p, .feed-content p { line-height: 1.8; margin: 10px 0; font-size: 14px; overflow-wrap: anywhere; }
+.postimg, .feed-img { width: 100%; max-height: 400px; border-radius: 14px; object-fit: cover; border: 1px solid #765032; }
+.post-actions, .feed-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #68472c; }
+.post-actions button, .feed-actions button { flex: 1; border: 0; background: transparent; color: #d5c0a8; padding: 7px 2px; border-radius: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.post-actions button.liked { color: #ff4b79; }
+
+/* الشريط السفلي */
+nav.nav { position: fixed; z-index: 10; bottom: 0; left: 0; right: 0; max-width: 760px; margin: auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 10px 10px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(145deg, #3d2618f5, #160c08f7); border: 1px solid #704a2a; border-bottom: 0; border-radius: 20px 20px 0 0; box-shadow: 0 -10px 30px #0008; backdrop-filter: blur(12px); align-items: center; }
+.nav button { border: 0; border-radius: 14px; background: transparent; color: #d5bfa4; padding: 7px 2px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; }
+.nav button span { font-size: 22px; display: flex; justify-content: center; align-items: center; height: 30px; }
+.nav button.active { background: linear-gradient(145deg, #9e2bed, #53118d); color: #fff; box-shadow: 0 0 18px #a52eff55, inset 1px 1px 2px #ffffff55; }
+.nav button.create { border-radius: 50%; width: 60px; height: 60px; justify-self: center; align-self: center; background: linear-gradient(145deg, #ffd978, #b87a24); color: #291609; border: 2px solid #fff0ac; box-shadow: 0 0 18px #ffca4b55, 4px 5px 0 #100905; font-size: 28px; padding: 0; position: relative; top: -15px; }
+
+/* --- القائمة المنبثقة للألعاب (Plus Menu) --- */
+.plus-menu { position: fixed; z-index: 30; left: 50%; bottom: 95px; transform: translateX(-50%); width: min(440px, 92vw); padding: 12px; }
+.plus-menu[hidden], .game-modal[hidden] { display: none; }
+.plus-menu-card, .game-card { background: linear-gradient(145deg, #392317, #180d08); border: 1px solid #b2763b; border-radius: 22px; box-shadow: 0 0 0 1px #ffdb7850, 0 15px 40px #000c; padding: 16px; }
+.plus-menu-head { display: flex; justify-content: space-between; align-items: center; color: var(--gold); margin-bottom: 12px; font-size: 16px;}
+.plus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.plus-grid button { position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 13px 4px; border-radius: 14px; border: 1px solid #6e492c; background: linear-gradient(145deg, #50321f, #21120b); box-shadow: 3px 4px 0 #0c0604; color: var(--gold); font-size: 25px; }
+.plus-grid button span { font-size: 13px; color: #fff0d4; font-weight: bold; }
+.plus-grid .game-tile { background: linear-gradient(145deg, #9e28ee, #4d0d86); border-color: #e6aaff; box-shadow: 0 0 16px #a62cff88, 3px 4px 0 #0c0604; color: #fff; }
+.plus-grid button:active { transform: translateY(3px); box-shadow: none; }
+
+/* --- شاشة اللعبة (Modal) --- */
+.game-modal { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: #080403d9; padding: 0; }
+.game-card { position: relative; width: 100vw; height: 100vh; border-radius: 0; text-align: center; padding: 0; display: flex; flex-direction: column; border: none; }
+
+/* --- قسم المحادثات --- */
+#chats-section { padding: 18px 14px; }
+.chat-item { display: flex; gap: 12px; align-items: center; background: var(--panel); padding: 12px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #5a3a24; }
+.chat-item img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold); }
+.chat-info h4 { color: var(--gold); margin-bottom: 4px; }
+.chat-info p { color: var(--muted); font-size: 12px; }
+#chat-room-view { display: none; flex-direction: column; height: 65vh; background: var(--panel); border-radius: 15px; border: 1px solid #5a3a24; overflow: hidden; }
+.chat-header { display: flex; align-items: center; gap: 10px; padding: 12px; background: #1a100a; border-bottom: 1px solid #5a3a24; }
+#messages-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+.message { max-width: 75%; padding: 10px 14px; border-radius: 12px; font-size: 14px; }
+.message.sent { align-self: flex-end; background: var(--purple); color: white; border-bottom-left-radius: 2px; }
+.message.received { align-self: flex-start; background: #352015; color: white; border-bottom-right-radius: 2px; }
+.chat-input-area { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #5a3a24; background: #1a100a; }
+.chat-input-area input { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid #54351f; background: #170d09; outline: none; color: white; }
+
+/* --- شاشة البرق --- */
+#lightning-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; pointer-events: none; z-index: 99999; opacity: 0; display: none; }
+#lightning-overlay.strike { display: block; animation: lightningStrike 0.5s ease-out forwards; }
+@keyframes lightningStrike { 0% { opacity: 0; } 10% { opacity: 1; background: #8b20e8; } 30% { opacity: 1; background: #ffd65a; } 100% { opacity: 0; background: transparent; } }
+
+/* --- رسائل التنبيه --- */
+.toast { position: fixed; z-index: 50; bottom: 100px; left: 50%; transform: translateX(-50%); background: #25140c; border: 1px solid var(--gold2); padding: 12px 18px; border-radius: 12px; box-shadow: 0 8px 30px #0009; display: none; max-width: 90%; text-align: center; color: var(--gold); font-weight: bold; }
+.toast.show { display: block; animation: pop .25s ease; }
+@keyframes pop { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
