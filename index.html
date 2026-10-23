@@ -37,13 +37,12 @@
     </header>
 
     <div class="tabs">
-        <button class="active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
-        <button onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
-        <button onclick="switchTab('friends')"><i class="uil uil-users-alt"></i></button>
-        <button onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
+        <button id="tab-home" class="active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
+        <button id="tab-chats" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
+        <button id="tab-friends" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i></button>
+        <button id="tab-games" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
     </div>
 
-    <!-- 1. قسم الرئيسية -->
     <main id="home-section" style="display: block;">
         <div class="composer">
             <div class="compose-top">
@@ -63,7 +62,6 @@
         <div id="feeds-container" class="feeds-list"></div>
     </main>
 
-    <!-- 2. قسم المحادثات -->
     <main id="chats-section" style="display: none;">
         <div id="chat-list-view">
             <h3 class="section-title">المحادثات</h3>
@@ -82,13 +80,11 @@
         </div>
     </main>
 
-    <!-- 3. قسم الأصدقاء -->
     <main id="friends-section" style="display: none;">
         <h3 class="section-title">الأصدقاء</h3>
         <div id="friends-container" class="feeds-list"></div>
     </main>
 
-    <!-- 4. قسم الملف الشخصي -->
     <main id="profile-section" style="display: none;">
         <div class="profile-card">
             <img src="https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff" id="profile-page-avatar" class="profile-page-avatar">
@@ -103,23 +99,19 @@
         <div id="my-posts-container" class="feeds-list"></div>
     </main>
 
-    <!-- 5. قسم مكتبة الألعاب الخارجية (الجديد) -->
     <main id="games-section" style="display: none;">
         <section class="intro">
-            <h1>🎮 ألعاب مجانية فقط</h1>
-            <p>روابط لفئات ألعاب مجانية يمكنك تشغيلها من متصفح الهاتف، دون شراء اللعبة أو تنزيلها.</p>
+            <h1>🎮 ألعاب مجانية</h1>
+            <p>اختر فئة والعب مباشرة من المتصفح.</p>
         </section>
-        
-        <input class="search" id="search" type="search" placeholder="ابحث عن فئة..." aria-label="ابحث عن فئة">
-        
-        <nav class="filters" aria-label="فئات الألعاب">
+        <input class="search" id="search" type="search" placeholder="ابحث عن فئة...">
+        <nav class="filters">
             <button class="filter active" data-category="all">الكل</button>
             <button class="filter" data-category="cars">🚗 سيارات</button>
             <button class="filter" data-category="flight">✈️ طيران</button>
             <button class="filter" data-category="brain">🧠 ألغاز</button>
             <button class="filter" data-category="action">⚡ أكشن</button>
         </nav>
-
         <section class="grid" id="games">
             <article class="game" data-category="cars" data-search="سيارات قيادة سباق car racing driving">
                 <div class="art">🏎️</div>
@@ -137,100 +129,20 @@
                 <div class="art">⚡</div>
                 <div class="info"><h2>الأكشن والمغامرة</h2><p>ألعاب حركة ومهارة.</p><a class="play" href="https://poki.com/en/action" target="_blank">اكتشف ↗</a></div>
             </article>
-            <article class="game" data-category="action" data-search="كريزي جيمز ألعاب مجانية crazygames free">
-                <div class="art">🎮</div>
-                <div class="info"><h2>المزيد من الألعاب</h2><p>مجموعة إضافية من الألعاب المجانية.</p><a class="play" href="https://www.crazygames.com/" target="_blank">تصفح ↗</a></div>
-            </article>
-            <article class="game" data-category="all" data-search="بوكي ألعاب مجانية poki">
-                <div class="art">🌍</div>
-                <div class="info"><h2>مكتبة ألعاب متنوعة</h2><p>تصفح فئات مختلفة واختر اللعبة.</p><a class="play" href="https://poki.com/" target="_blank">افتح ↗</a></div>
-            </article>
         </section>
     </main>
 
-    <!-- الشريط السفلي -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('home')"><i class="uil uil-estate"></i><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i><span>الأصدقاء</span></button>
-        <!-- الزر العائم للألعاب -->
-        <button class="nav-item fab-btn" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
-        <button class="nav-item" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i><span>الدردشة</span></button>
-        <button class="nav-item" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>ملفي</span></button>
+        <button class="nav-item active" id="nav-home" onclick="switchTab('home')"><i class="uil uil-estate"></i><span>الرئيسية</span></button>
+        <button class="nav-item" id="nav-friends" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i><span>الأصدقاء</span></button>
+        <button class="nav-item fab-btn" id="nav-games" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
+        <button class="nav-item" id="nav-chats" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i><span>الدردشة</span></button>
+        <button class="nav-item" id="nav-profile" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>ملفي</span></button>
     </nav>
 
     <div id="lightning-overlay"></div>
     <div class="toast" id="toast"></div>
 
     <script type="module" src="script.js"></script>
-    <script>
-        // سكريبت الواجهة
-        window.switchTab = function(tab) {
-            document.querySelectorAll('main').forEach(m => m.style.display = 'none');
-            document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.remove('active'));
-            
-            if (tab === 'home') {
-                document.getElementById('home-section').style.display = 'block';
-                document.querySelectorAll('.bottom-nav .nav-item')[0].classList.add('active');
-            } else if (tab === 'chats') {
-                document.getElementById('chats-section').style.display = 'block';
-                document.querySelectorAll('.bottom-nav .nav-item')[3].classList.add('active');
-                if(typeof loadUsersList === 'function') loadUsersList();
-            } else if (tab === 'friends') {
-                document.getElementById('friends-section').style.display = 'block';
-                document.querySelectorAll('.bottom-nav .nav-item')[1].classList.add('active');
-                if(typeof loadFriendsList === 'function') loadFriendsList();
-            } else if (tab === 'profile') {
-                document.getElementById('profile-section').style.display = 'block';
-                document.querySelectorAll('.bottom-nav .nav-item')[4].classList.add('active');
-                if(typeof loadProfile === 'function') loadProfile();
-            } else if (tab === 'games') {
-                document.getElementById('games-section').style.display = 'block';
-                document.querySelectorAll('.bottom-nav .nav-item')[2].classList.add('active');
-            }
-        };
-
-        window.triggerLightning = function() {
-            const overlay = document.getElementById('lightning-overlay');
-            overlay.classList.remove('strike');
-            void overlay.offsetWidth;
-            overlay.classList.add('strike');
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-        };
-
-        document.querySelectorAll('[data-toast]').forEach(el => {
-            el.addEventListener('click', () => {
-                const t = document.getElementById('toast');
-                t.innerText = el.getAttribute('data-toast');
-                t.classList.add('show');
-                setTimeout(() => t.classList.remove('show'), 2000);
-            });
-        });
-
-        // تشغيل فلاتر البحث الخاصة بالألعاب
-        const buttons = [...document.querySelectorAll('.filter')];
-        const cards = [...document.querySelectorAll('.game')];
-        const search = document.getElementById('search');
-        let category = 'all';
-
-        function updateGames() {
-            if(!search) return;
-            const q = search.value.trim().toLowerCase();
-            cards.forEach(card => {
-                card.style.display = (category === 'all' || card.dataset.category === category) && 
-                (card.dataset.search + ' ' + card.innerText).toLowerCase().includes(q) ? 'flex' : 'none';
-            });
-        }
-
-        buttons.forEach(btn => btn.addEventListener('click', () => {
-            category = btn.dataset.category;
-            buttons.forEach(b => b.classList.toggle('active', b === btn));
-            updateGames();
-        }));
-        if(search) search.addEventListener('input', updateGames);
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-        }
-    </script>
 </body>
 </html>
