@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>دادوسا - سلم وثعبان</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background-color: #1a1a1a; color: #e8c547; font-family: 'Cairo', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; padding: 10px; }
+        .header { font-size: 18px; margin-bottom: 15px; text-align: center; text-shadow: 2px 2px 4px #000; }
+        .board { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; max-width: 350px; width: 100%; background: #333; padding: 5px; border-radius: 8px; border: 3px solid #e8c547; }
+        .cell { aspect-ratio: 1; background: #222; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; border: 1px solid #444; }
+        .cell.snake { background: #4a0000; color: #ff6b6b; }
+        .cell.ladder { background: #004a00; color: #6bff6b; }
+        .player1 { position: absolute; width: 14px; height: 14px; background: #ff4757; border-radius: 50%; border: 2px solid #fff; z-index: 10; transform: translate(-50%, -50%); top: 50%; left: 30%; }
+        .player2 { position: absolute; width: 14px; height: 14px; background: #1e90ff; border-radius: 50%; border: 2px solid #fff; z-index: 10; transform: translate(-50%, -50%); top: 50%; left: 70%; }
+        .controls { display: flex; gap: 20px; margin-top: 20px; align-items: center; }
+        .dice { font-size: 40px; background: #fff; color: #000; padding: 5px 15px; border-radius: 10px; border: 3px solid #e8c547; }
+        button { background: #333; color: #e8c547; border: 2px solid #e8c547; padding: 10px 25px; border-radius: 8px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 3px 3px 0 #000; }
+        button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .status { margin-top: 10px; font-size: 16px; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="header">دادوسا: سلم وثعبان 🎲</div>
+    <div class="board" id="board"></div>
+    <div class="controls">
+        <button id="rollBtn" onclick="rollDice()">رمي النرد</button>
+        <div class="dice" id="diceDisplay">🎲</div>
+    </div>
+    <div class="status" id="status">دور اللاعب: <span style="color:#ff4757">الأحمر</span></div>
+    <script>
+        const snakes = { 16: 6, 47: 26, 49: 11, 56: 53, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 98: 78 };
+        const ladders = { 1: 38, 4: 14, 9: 31, 21: 42, 28: 84, 36: 44, 51: 67, 71: 91, 80: 100 };
+        let p1Pos = 0; let p2Pos = 0; let turn = 1; let gameOver = false;
+        const boardEl = document.getElementById('board');
+        const statusEl = document.getElementById('status');
+        const diceDisplay = document.getElementById('diceDisplay');
+        const rollBtn = document.getElementById('rollBtn');
+
+        function initBoard() {
+            boardEl.innerHTML = '';
+            for (let i = 100; i >= 1; i--) {
+                const cell = document.createElement('div');
+                cell.className = 'cell'; cell.id = 'cell-' + i; cell.innerText = i;
+                if (snakes[i]) { cell.classList.add('snake'); cell.innerText += ' 🐍'; }
+                if (ladders[i]) { cell.classList.add('ladder'); cell.innerText += ' 🪜'; }
+                boardEl.appendChild(cell);
+            }
+            updatePlayers();
+        }
+        function updatePlayers() {
+            document.querySelectorAll('.player1, .player2').forEach(el => el.remove());
+            if (p1Pos > 0 && p1Pos <= 100) document.getElementById('cell-' + p1Pos).appendChild(createPlayer('player1'));
+            if (p2Pos > 0 && p2Pos <= 100) document.getElementById('cell-' + p2Pos).appendChild(createPlayer('player2'));
+        }
+        function createPlayer(className) {
+            const div = document.createElement('div'); div.className = className; return div;
+        }
+        async function rollDice() {
+            if (gameOver) return; rollBtn.disabled = true;
+            let roll = Math.floor(Math.random() * 6) + 1;
+            diceDisplay.innerText = roll === 1 ? '⚀' : roll === 2 ? '⚁' : roll === 3 ? '⚂' : roll === 4 ? '⚃' : roll === 5 ? '⚄' : '⚅';
+            await new Promise(r => setTimeout(r, 500));
+            if (turn === 1) {
+                p1Pos = movePlayer(p1Pos, roll);
+                if (p1Pos >= 100) return endGame('الأحمر');
+                turn = 2; statusEl.innerHTML = 'دور اللاعب: <span style="color:#1e90ff">الأزرق</span>';
+            } else {
+                p2Pos = movePlayer(p2Pos, roll);
+                if (p2Pos >= 100) return endGame('الأزرق');
+                turn = 1; statusEl.innerHTML = 'دور اللاعب: <span style="color:#ff4757">الأحمر</span>';
+            }
+            updatePlayers(); rollBtn.disabled = false;
+        }
+        function movePlayer(pos, roll) {
+            let newPos = pos + roll;
+            if (newPos > 100) return pos;
+            if (snakes[newPos]) newPos = snakes[newPos];
+            else if (ladders[newPos]) newPos = ladders[newPos];
+            return newPos;
+        }
+        function endGame(winner) {
+            gameOver = true;
+            statusEl.innerHTML = `🎉 فاز اللاعب <span style="color:${winner === 'الأحمر' ? '#ff4757' : '#1e90ff'}">${winner}</span>!`;
+            rollBtn.disabled = true;
+            setTimeout(() => {
+                if(confirm("هل تريد اللعب مرة أخرى؟")) {
+                    p1Pos = 0; p2Pos = 0; turn = 1; gameOver = false; rollBtn.disabled = false;
+                    statusEl.innerHTML = 'دور اللاعب: <span style="color:#ff4757">الأحمر</span>';
+                    diceDisplay.innerText = '🎲'; initBoard();
+                }
+            }, 500);
+        }
+        initBoard();
+    </script>
+</body>
+</html>
