@@ -1,296 +1,101 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, where, doc, getDoc, setDoc, updateDoc, getDocs } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDyV14xihKJ7pLeQ6z0k_lJmdXxpb5qoto",
-    authDomain: "chat-room-c33af.firebaseapp.com",
-    projectId: "chat-room-c33af",
-    storageBucket: "chat-room-c33af.firebasestorage.app",
-    messagingSenderId: "101331704281",
-    appId: "1:101331704281:web:00a9d33be52f0e0caba1c8",
-    measurementId: "G-SCM4W2SHYF"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const IMGBB_API_KEY = "b1a7511ae786e607536e4211bc606ab5";
-const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff";
-
-// --- 1. التنقل بين الصفحات (تم دمجه هنا ليعمل بشكل مثالي) ---
-window.switchTab = function(tab) {
-    document.querySelectorAll('main').forEach(m => m.style.display = 'none');
-    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
-
-    if (tab === 'home') {
-        document.getElementById('home-section').style.display = 'block';
-        document.getElementById('nav-home').classList.add('active');
-        document.getElementById('tab-home').classList.add('active');
-    } else if (tab === 'chats') {
-        document.getElementById('chats-section').style.display = 'block';
-        document.getElementById('nav-chats').classList.add('active');
-        document.getElementById('tab-chats').classList.add('active');
-        if(typeof loadUsersList === 'function') loadUsersList();
-    } else if (tab === 'friends') {
-        document.getElementById('friends-section').style.display = 'block';
-        document.getElementById('nav-friends').classList.add('active');
-        document.getElementById('tab-friends').classList.add('active');
-        if(typeof loadFriendsList === 'function') loadFriendsList();
-    } else if (tab === 'profile') {
-        document.getElementById('profile-section').style.display = 'block';
-        document.getElementById('nav-profile').classList.add('active');
-        if(typeof loadProfile === 'function') loadProfile();
-    } else if (tab === 'games') {
-        document.getElementById('games-section').style.display = 'block';
-        document.getElementById('nav-games').classList.add('active');
-        document.getElementById('tab-games').classList.add('active');
-    }
-};
-
-window.triggerLightning = function() {
-    const overlay = document.getElementById('lightning-overlay');
-    overlay.classList.remove('strike');
-    void overlay.offsetWidth;
-    overlay.classList.add('strike');
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-};
-
-document.querySelectorAll('[data-toast]').forEach(el => {
-    el.addEventListener('click', () => {
-        const t = document.getElementById('toast');
-        t.innerText = el.getAttribute('data-toast');
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2000);
-    });
-});
-
-// فلاتر الألعاب
-const buttons = [...document.querySelectorAll('.filter')];
-const cards = [...document.querySelectorAll('.game')];
-const search = document.getElementById('search');
-let category = 'all';
-
-function updateGames() {
-    if(!search) return;
-    const q = search.value.trim().toLowerCase();
-    cards.forEach(card => {
-        card.style.display = (category === 'all' || card.dataset.category === category) && 
-        (card.dataset.search + ' ' + card.innerText).toLowerCase().includes(q) ? 'flex' : 'none';
-    });
+:root {
+    --bg: #160d09; --panel: #28170f; --gold: #ffd65a;
+    --purple: #8b20e8; --text: #fff4df; --muted: #bca995;
 }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; max-width: 100vw; overflow-x: hidden; }
+body { background: radial-gradient(ellipse at 50% -10%, #4a2c17 0, #24140d 42%, #100906 100%); color: var(--text); min-height: 100vh; padding-bottom: 90px; direction: rtl; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
 
-buttons.forEach(btn => btn.addEventListener('click', () => {
-    category = btn.dataset.category;
-    buttons.forEach(b => b.classList.toggle('active', b === btn));
-    updateGames();
-}));
-if(search) search.addEventListener('input', updateGames);
+/* Header & Quick */
+header { padding: 15px; background: linear-gradient(145deg, #42291a, #24140d 75%); border-bottom: 1px solid #714b29; box-shadow: 0 12px 28px #0008; }
+.topline { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+.header-icons { display: flex; gap: 8px; }
+.iconbtn { width: 38px; height: 38px; border: 1px solid #5a3a24; border-radius: 10px; background: linear-gradient(145deg, #4c3020, #20120c); box-shadow: 2px 3px 0 #100905; font-size: 18px; display: flex; justify-content: center; align-items: center; color: var(--muted); }
+.header-brand { text-align: center; }
+.header-brand h1 { color: var(--gold); font-size: 22px; font-weight: 900; text-shadow: 0 2px 0 #71420b; }
+.header-brand p { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.logo { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #a22cff, #5a119a); border: 2px solid var(--gold); box-shadow: 0 0 0 3px #6d3d20; font-weight: 900; font-size: 16px; position: relative; }
+.logo::after { content: '👑'; position: absolute; top: -10px; font-size: 14px; }
+.quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.quick button, .quick a { height: 95px; border: 1px solid #5a3a24; border-radius: 12px; background: linear-gradient(145deg, #382317, #21120c); box-shadow: 3px 4px 0 #120a06; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: var(--gold); font-size: 12px; font-weight: 700; text-decoration: none; }
+.quick i { font-size: 24px; color: var(--gold); }
+.quick button:active, .quick a:active { transform: translateY(3px); box-shadow: none; }
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}
+/* Tabs & Main */
+.tabs { display: flex; background: #1d100a; border-bottom: 1px solid #59391f; }
+.tabs button { flex: 1; padding: 12px 0; border: 0; background: transparent; font-size: 20px; color: var(--muted); border-bottom: 2px solid transparent; }
+.tabs button.active { color: var(--gold); border-bottom-color: var(--gold); }
+main { padding: 15px; max-width: 760px; margin: 0 auto; }
+.section-title { color: var(--gold); font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; font-weight: bold; }
 
-// --- 2. Firebase (تسجيل الدخول، المنشورات، المحادثات) ---
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        try {
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
-            if (!userSnap.exists()) {
-                await setDoc(userRef, { uid: user.uid, name: user.displayName || user.email.split("@")[0], email: user.email, photoURL: DEFAULT_AVATAR, createdAt: serverTimestamp() });
-            }
-        } catch (e) { console.log(e); }
-        loadPosts(); 
-    } else {
-        window.location.href = './login.html';
-    }
-});
+/* Composer & Feeds */
+.composer { background: var(--panel); border-radius: 15px; padding: 10px; border: 1px solid #3a2315; margin-bottom: 15px; }
+.compose-top { display: flex; align-items: center; gap: 8px; background: #170d09; border-radius: 10px; padding: 5px 10px; border: 1px solid #3a2315; margin-bottom: 10px; }
+.compose-top .avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--purple); display: grid; place-items: center; font-weight: bold; font-size: 12px; color: white; flex-shrink: 0; }
+.compose-top input { flex: 1; background: transparent; border: none; padding: 8px 0; outline: none; font-size: 14px; color: white; }
+.actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border-radius: 10px; border: 1px solid #5a3a24; background: linear-gradient(145deg, #382317, #21120c); color: var(--gold); font-weight: 700; font-size: 13px; }
+.btn.primary { background: linear-gradient(145deg, #9b2bf0, #5a119a); border-color: #bc58ff; color: white; padding: 8px 20px; }
+.feeds-list { display: flex; flex-direction: column; gap: 15px; }
+.feed { background: var(--panel); border-radius: 15px; padding: 12px; border: 1px solid #3a2315; }
+.feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.feed-header img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--purple); }
+.feed-info h4 { color: var(--gold); font-size: 14px; }
+.feed-info span { font-size: 11px; color: var(--muted); }
+.feed-content p { font-size: 14px; line-height: 1.5; margin-bottom: 10px; overflow-wrap: anywhere; }
+.feed-img { width: 100%; border-radius: 10px; max-height: 350px; object-fit: cover; }
 
-const postBtn = document.getElementById('post-btn');
-const postInput = document.getElementById('create-post-input');
-const imageInput = document.getElementById('image-input');
-const previewContainer = document.getElementById('image-preview-container');
-const previewImg = document.getElementById('image-preview');
+/* Profile & Friends & Chat */
+.profile-card { background: var(--panel); border-radius: 20px; padding: 25px 15px; text-align: center; border: 1px solid #3a2315; margin-bottom: 20px; }
+.profile-page-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; margin-bottom: 15px; }
+.profile-card h2 { color: var(--gold); font-size: 22px; margin-bottom: 5px; }
+.profile-stats { display: flex; justify-content: center; gap: 40px; margin-top: 20px; border-top: 1px dashed #3a2315; padding-top: 15px; }
+.profile-stats strong { display: block; color: var(--gold); font-size: 18px; }
+.profile-stats span { font-size: 12px; color: var(--muted); }
+.chat-item { display: flex; gap: 10px; align-items: center; background: var(--panel); padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #3a2315; }
+.chat-item img { width: 45px; height: 45px; border-radius: 50%; }
+.chat-info h4 { color: var(--gold); font-size: 14px; }
+.chat-info p { color: var(--muted); font-size: 12px; }
+#chat-room-view { display: none; flex-direction: column; height: 65vh; background: var(--panel); border-radius: 12px; border: 1px solid #3a2315; }
+.chat-header { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #3a2315; background: #1a100a; }
+#messages-container { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.message { max-width: 75%; padding: 10px 12px; border-radius: 12px; font-size: 13px; }
+.message.sent { align-self: flex-end; background: var(--purple); color: white; border-bottom-left-radius: 2px; }
+.message.received { align-self: flex-start; background: #352015; color: white; border-bottom-right-radius: 2px; }
+.chat-input-area { display: flex; gap: 8px; padding: 10px; border-top: 1px solid #3a2315; background: #1a100a; }
+.chat-input-area input { flex: 1; padding: 10px; border-radius: 15px; border: 1px solid #3a2315; background: #110805; color: white; outline: none; }
 
-if(imageInput) {
-    imageInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => { previewImg.src = ev.target.result; previewContainer.hidden = false; };
-            reader.readAsDataURL(file);
-        } else { previewImg.src = ""; previewContainer.hidden = true; }
-    });
-}
+/* Bottom Nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 8px 5px calc(8px + env(safe-area-inset-bottom)); background: #1a100a; border-top: 1px solid #3a2315; z-index: 10; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: transparent; border: none; color: var(--muted); font-size: 10px; width: 60px; }
+.nav-item i { font-size: 22px; }
+.nav-item.active { color: var(--gold); }
+.fab-btn { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(145deg, #ffd978, #b87a24); color: #291609; border: 2px solid #fff0ac; font-size: 26px; display: flex; justify-content: center; align-items: center; margin-top: -25px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
 
-if(postBtn) {
-    postBtn.addEventListener('click', async () => {
-        const text = postInput.value.trim();
-        const imageFile = imageInput.files[0];
-        const user = auth.currentUser;
-        if (!user) return alert("يجب تسجيل الدخول أولاً");
+/* Games Styles */
+.intro { padding: 20px; border: 1px solid #3a2315; border-radius: 22px; background: linear-gradient(145deg, #321d13, #21120d); box-shadow: 0 7px 0 #0b0705; margin-bottom: 20px; }
+.intro h1 { font-size: 24px; margin: 0 0 6px; color: var(--gold); }
+.intro p { margin: 0; color: var(--muted); line-height: 1.8; font-size: 14px;}
+.search { width: 100%; padding: 13px 15px; border-radius: 14px; border: 1px solid #3a2315; background: #130b08; color: var(--text); font: inherit; outline: none; margin: 8px 0 18px; }
+.filters { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 18px; }
+.filter { border: 1px solid #3a2315; border-radius: 12px; padding: 8px 14px; color: var(--text); background: #28170f; font: inherit; cursor: pointer; }
+.filter.active, .filter:hover { background: linear-gradient(135deg,#a72af2,#6512a7); border-color: #d69aff; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
+.game { border: 1px solid #3a2315; border-radius: 20px; overflow: hidden; background: linear-gradient(160deg,#321e14,#21120d); box-shadow: 0 5px 0 #0a0604; display: flex; flex-direction: column; min-height: 220px; }
+.art { height: 90px; display: grid; place-items: center; font-size: 40px; background: radial-gradient(circle at 50% 40%,#62401e,#27150d 72%); border-bottom: 1px solid #3a2315; }
+.info { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+.info h2 { font-size: 16px; margin: 0 0 5px; color: var(--gold); }
+.info p { font-size: 12px; color: var(--muted); margin: 0 0 14px; flex: 1; }
+.play { display: block; text-align: center; text-decoration: none; background: linear-gradient(135deg,#a52af0,#6411a5); color: white; border: 1px solid #c96cff; border-radius: 12px; padding: 10px; font-weight: 800; font-size: 13px; }
 
-        if (text !== '' || imageFile) {
-            postBtn.innerText = "..."; postBtn.disabled = true;
-            try {
-                let imageUrl = "";
-                if (imageFile) {
-                    const formData = new FormData(); formData.append('image', imageFile);
-                    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: formData });
-                    const data = await res.json(); if (data.success) imageUrl = data.data.url;
-                }
-                await addDoc(collection(db, "posts"), { uid: user.uid, text, imageUrl, author: user.displayName || user.email.split("@")[0], authorImage: DEFAULT_AVATAR, createdAt: serverTimestamp() });
-                postInput.value = ''; imageInput.value = ''; previewImg.src = ""; previewContainer.hidden = true;
-            } catch (e) { alert("حدث خطأ: " + e.message); } 
-            finally { postBtn.innerText = "نشر ✦"; postBtn.disabled = false; }
-        } else { alert("اكتب شيئاً أو اختر صورة"); }
-    });
-}
-
-function loadPosts() {
-    const container = document.getElementById('feeds-container');
-    if(!container) return;
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    
-    onSnapshot(q, (snapshot) => {
-        container.innerHTML = ""; 
-        snapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const feed = document.createElement('div'); feed.className = 'feed';
-            feed.innerHTML = `
-                <div class="feed-header">
-                    <img src="${data.authorImage || DEFAULT_AVATAR}">
-                    <div class="feed-info"><h4>${data.author}</h4><span>الآن</span></div>
-                </div>
-                <div class="feed-content">
-                    <p>${data.text || ''}</p>
-                    ${data.imageUrl ? `<img src="${data.imageUrl}" class="feed-img">` : ''}
-                </div>
-            `;
-            container.appendChild(feed);
-        });
-    });
-}
-
-let currentChatId = null;
-let unsubscribeMessages = null;
-
-async function loadUsersList() {
-    const container = document.getElementById('users-container'); 
-    if (!container || !auth.currentUser) return;
-    container.innerHTML = '<p style="text-align:center; color:gray;">جاري التحميل...</p>';
-    
-    try {
-        const q = query(collection(db, "users"), where("uid", "!=", auth.currentUser.uid));
-        const snapshot = await getDocs(q);
-        container.innerHTML = '';
-        if (snapshot.empty) { container.innerHTML = '<p style="text-align:center; color:gray;">لا يوجد مستخدمون آخرون.</p>'; return; }
-        
-        snapshot.forEach((doc) => {
-            const u = doc.data();
-            const div = document.createElement('div'); div.className = 'chat-item';
-            div.innerHTML = `<img src="${u.photoURL || DEFAULT_AVATAR}"><div class="chat-info"><h4>${u.name || 'مستخدم'}</h4><p>انقر لبدء المحادثة</p></div>`;
-            div.onclick = () => startChat(u.uid, u.name);
-            container.appendChild(div);
-        });
-    } catch (e) { container.innerHTML = '<p style="color:red; text-align:center;">حدث خطأ</p>'; }
-}
-
-async function loadFriendsList() {
-    const container = document.getElementById('friends-container'); 
-    if (!container || !auth.currentUser) return;
-    container.innerHTML = '<p style="text-align:center; color:gray;">جاري التحميل...</p>';
-    
-    try {
-        const q = query(collection(db, "users"), where("uid", "!=", auth.currentUser.uid));
-        const snapshot = await getDocs(q);
-        container.innerHTML = '';
-        if (snapshot.empty) { container.innerHTML = '<p style="text-align:center; color:gray;">لا يوجد أصدقاء.</p>'; return; }
-        
-        snapshot.forEach((doc) => {
-            const u = doc.data();
-            const div = document.createElement('div'); div.className = 'chat-item';
-            div.innerHTML = `<img src="${u.photoURL || DEFAULT_AVATAR}"><div class="chat-info"><h4>${u.name || 'مستخدم'}</h4><p>انقر لبدء المحادثة</p></div>`;
-            div.onclick = () => { startChat(u.uid, u.name); switchTab('chats'); };
-            container.appendChild(div);
-        });
-    } catch (e) { container.innerHTML = '<p style="color:red; text-align:center;">حدث خطأ</p>'; }
-}
-
-async function startChat(otherUid, otherName) {
-    currentChatId = [auth.currentUser.uid, otherUid].sort().join("_");
-    document.getElementById('chat-list-view').style.display = 'none'; 
-    document.getElementById('chat-room-view').style.display = 'flex';
-    document.getElementById('chat-with-name').innerText = otherName;
-    
-    const chatRef = doc(db, "chats", currentChatId); 
-    const chatSnap = await getDoc(chatRef);
-    if (!chatSnap.exists()) { 
-        await setDoc(chatRef, { participants: [auth.currentUser.uid, otherUid], lastMessage: "", lastSender: "", updatedAt: serverTimestamp() }); 
-    }
-    loadMessages();
-}
-
-function loadMessages() {
-    const container = document.getElementById('messages-container'); container.innerHTML = '';
-    if (unsubscribeMessages) unsubscribeMessages();
-    const q = query(collection(db, "chats", currentChatId, "messages"), orderBy("createdAt", "asc"));
-    
-    unsubscribeMessages = onSnapshot(q, (snapshot) => {
-        container.innerHTML = '';
-        snapshot.forEach((doc) => {
-            const msg = doc.data(); const isMe = msg.senderId === auth.currentUser.uid;
-            const div = document.createElement('div'); div.className = isMe ? 'message sent' : 'message received';
-            div.textContent = msg.text; container.appendChild(div);
-        });
-        container.scrollTop = container.scrollHeight;
-    });
-}
-
-document.getElementById('send-message-btn')?.addEventListener('click', async () => {
-    const input = document.getElementById('message-input'); const text = input.value.trim();
-    if (text && currentChatId && auth.currentUser) {
-        input.value = '';
-        try {
-            await addDoc(collection(db, "chats", currentChatId, "messages"), { senderId: auth.currentUser.uid, text: text, createdAt: serverTimestamp() });
-            await updateDoc(doc(db, "chats", currentChatId), { lastMessage: text, lastSender: auth.currentUser.uid, updatedAt: serverTimestamp() });
-        } catch (e) { alert("فشل الإرسال: " + e.message); }
-    }
-});
-
-window.closeChatRoom = function() {
-    document.getElementById('chat-room-view').style.display = 'none'; 
-    document.getElementById('chat-list-view').style.display = 'block';
-    if (unsubscribeMessages) unsubscribeMessages(); currentChatId = null;
-};
-
-function loadProfile() {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    document.getElementById('profile-page-name').innerText = user.displayName || user.email.split("@")[0];
-    document.getElementById('profile-page-email').innerText = user.email;
-    document.getElementById('profile-page-avatar').src = user.photoURL || DEFAULT_AVATAR;
-
-    const container = document.getElementById('my-posts-container');
-    const q = query(collection(db, "posts"), where("uid", "==", user.uid), orderBy("createdAt", "desc"));
-    
-    onSnapshot(q, (snapshot) => {
-        container.innerHTML = '';
-        document.getElementById('profile-post-count').innerText = snapshot.size;
-        
-        if (snapshot.empty) {
-            container.innerHTML = '<p style="text-align:center; color:gray;">لم تنشر أي شيء بعد.</p>';
-            return;
-        }
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            const div = document.createElement('div');
-            div.className = 'feed';
-            div.innerHTML = `<div class="feed-content"><p>${data.text || ''}</p></div>${data.imageUrl ? `<img src="${data.imageUrl}" class="feed-img">` : ''}`;
-            container.appendChild(div);
-        });
-    });
-}
+/* Overlays */
+#lightning-overlay { position: fixed; inset: 0; background: #fff; pointer-events: none; z-index: 99999; opacity: 0; display: none; }
+#lightning-overlay.strike { display: block; animation: lightningStrike 0.4s ease-out forwards; }
+@keyframes lightningStrike { 0% { opacity: 0; } 20% { opacity: 1; background: #8b20e8; } 50% { opacity: 1; background: #ffd65a; } 100% { opacity: 0; background: transparent; } }
+.toast { position: fixed; z-index: 50; bottom: 90px; left: 50%; transform: translateX(-50%); background: #25140c; border: 1px solid var(--gold); padding: 10px 20px; border-radius: 10px; color: var(--gold); font-size: 13px; font-weight: bold; display: none; text-align: center; width: max-content; max-width: 90%; }
+.toast.show { display: block; animation: pop .3s ease; }
+@keyframes pop { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
