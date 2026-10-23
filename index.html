@@ -154,7 +154,29 @@
                     .then(registration => console.log('ServiceWorker registered'))
                     .catch(err => console.log('ServiceWorker registration failed: ', err));
             });
-        }
+        }<!-- نافذة البحث المخصصة -->
+<div id="search-modal" class="custom-modal" style="display: none;">
+    <div class="modal-content">
+        <h3>🔍 البحث في المنشورات</h3>
+        <input type="text" id="search-input" placeholder="اكتب كلمة للبحث...">
+        <div class="modal-actions">
+            <button id="search-submit" class="btn primary">بحث</button>
+            <button id="search-cancel" class="btn">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة تأكيد تسجيل الخروج المخصصة -->
+<div id="logout-modal" class="custom-modal" style="display: none;">
+    <div class="modal-content">
+        <h3>🚪 تسجيل الخروج</h3>
+        <p>هل أنت متأكد من تسجيل الخروج من CHAT ROOM؟</p>
+        <div class="modal-actions">
+            <button id="logout-yes" class="btn primary" style="background: #ff3333; border-color: #ff3333;">نعم، خروج</button>
+            <button id="logout-no" class="btn">إلغاء</button>
+        </div>
+    </div>
+</div>
     </script>
 </body>
 </html>
