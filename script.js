@@ -264,15 +264,21 @@ function loadProfile() {
         });
     });
 }
-// ================== تفعيل أزرار الشريط العلوي والبحث ==================
+// ================== تفعيل أزرار الشريط العلوي والبحث (نوافذ مخصصة) ==================
 
 // 1. زر القائمة (تسجيل الخروج)
 document.getElementById('menu-btn')?.addEventListener('click', () => {
-    if(confirm("هل أنت متأكد من تسجيل الخروج؟")) {
-        signOut(auth).then(() => {
-            window.location.href = './login.html';
-        });
-    }
+    document.getElementById('logout-modal').style.display = 'flex';
+});
+
+document.getElementById('logout-yes')?.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        window.location.href = './login.html';
+    });
+});
+
+document.getElementById('logout-no')?.addEventListener('click', () => {
+    document.getElementById('logout-modal').style.display = 'none';
 });
 
 // 2. زر الإشعارات
@@ -285,10 +291,18 @@ document.getElementById('notif-btn')?.addEventListener('click', () => {
     }
 });
 
-// 3. دالة البحث
+// 3. نافذة البحث المخصصة
 const performSearch = () => {
-    const query = prompt("ابحث عن كلمة في المنشورات:");
-    if(query !== null && query.trim() !== "") {
+    document.getElementById('search-modal').style.display = 'flex';
+    document.getElementById('search-input').value = ''; 
+    document.getElementById('search-input').focus();
+};
+
+document.getElementById('search-submit')?.addEventListener('click', () => {
+    const query = document.getElementById('search-input').value.trim();
+    document.getElementById('search-modal').style.display = 'none'; 
+    
+    if(query !== "") {
         const feeds = document.querySelectorAll('#feeds-container .feed');
         let found = 0;
         feeds.forEach(feed => {
@@ -299,12 +313,19 @@ const performSearch = () => {
                 feed.style.display = 'none';
             }
         });
-        if(found === 0) alert("لم يتم العثور على أي منشور يحتوي على هذه الكلمة.");
-    } else if (query === "") {
+        if(found === 0) {
+            alert("لم يتم العثور على أي منشور يحتوي على: " + query);
+            feeds.forEach(feed => feed.style.display = 'block');
+        }
+    } else {
         document.querySelectorAll('#feeds-container .feed').forEach(feed => feed.style.display = 'block');
     }
-};
+});
 
-// ربط زر البحث العلوي وزر البحث السريع
+document.getElementById('search-cancel')?.addEventListener('click', () => {
+    document.getElementById('search-modal').style.display = 'none';
+});
+
+// ربط أزرار البحث
 document.getElementById('top-search-btn')?.addEventListener('click', performSearch);
 document.getElementById('quick-search-btn')?.addEventListener('click', performSearch);
