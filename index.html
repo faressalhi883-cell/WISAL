@@ -12,29 +12,30 @@
 <body oncontextmenu="return false;">
 
     <header>
-    <div class="topline">
-        <div class="header-icons">
-            <button class="iconbtn" id="menu-btn"><i class="uil uil-bars"></i></button>
-            <button class="iconbtn" id="top-search-btn"><i class="uil uil-search"></i></button>
-            <button class="iconbtn" id="notif-btn"><i class="uil uil-bell"></i></button>
+        <div class="topline">
+            <div class="header-icons">
+                <button class="iconbtn" id="menu-btn"><i class="uil uil-bars"></i></button>
+                <button class="iconbtn" id="top-search-btn"><i class="uil uil-search"></i></button>
+                <button class="iconbtn" id="notif-btn"><i class="uil uil-bell"></i></button>
+            </div>
+            <div class="header-brand">
+                <h1>CHAT ROOM</h1>
+                <p>تواصل • تعرّف • أصدقاء جدد</p>
+            </div>
+            <div class="logo">US</div>
         </div>
-        <div class="header-brand">
-            <h1>CHAT ROOM</h1>
-            <p>تواصل • تعرّف • أصدقاء جدد</p>
-        </div>
-        <div class="logo">US</div>
-    </div>
 
-    <div class="quick">
-        <button type="button" onclick="document.getElementById('profile-pic-input').click()">
-            <i class="uil uil-user sym"></i><span>حسابي</span>
-            <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
-        </button>
-        <button type="button" id="quick-search-btn"><i class="uil uil-search sym"></i><span>بحث</span></button>
-        <a href="https://wa.me/" target="_blank"><i class="uil uil-whatsapp sym"></i><span>واتساب</span></a>
-        <button type="button" onclick="triggerLightning()"><i class="uil uil-eye sym"></i><span>رؤية</span></button>
-    </div>
-</header>
+        <div class="quick">
+            <button type="button" onclick="document.getElementById('profile-pic-input').click()">
+                <i class="uil uil-user sym"></i><span>حسابي</span>
+            </button>
+            <input type="file" id="profile-pic-input" accept="image/*" hidden>
+            
+            <button type="button" id="quick-search-btn"><i class="uil uil-search sym"></i><span>بحث</span></button>
+            <a href="https://wa.me/" target="_blank"><i class="uil uil-whatsapp sym"></i><span>واتساب</span></a>
+            <button type="button" onclick="triggerLightning()"><i class="uil uil-eye sym"></i><span>رؤية</span></button>
+        </div>
+    </header>
 
     <div class="tabs">
         <button id="tab-home" class="active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
@@ -87,7 +88,7 @@
 
     <main id="profile-section" style="display: none;">
         <div class="profile-card">
-            <img src="https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff" id="profile-page-avatar" class="profile-page-avatar">
+            <img src="https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff" id="profile-page-avatar" class="profile-page-avatar" onerror="this.src='https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff'">
             <h2 id="profile-page-name">اسم المستخدم</h2>
             <p id="profile-page-email" style="color: var(--muted); font-size: 13px;">البريد الإلكتروني</p>
             <div class="profile-stats">
@@ -143,10 +144,44 @@
     <div id="lightning-overlay"></div>
     <div class="toast" id="toast"></div>
 
+    <!-- النوافذ المخصصة -->
+    <div id="search-modal" class="custom-modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🔍 البحث في المنشورات</h3>
+            <input type="text" id="search-input" placeholder="اكتب كلمة للبحث...">
+            <div class="modal-actions">
+                <button id="search-submit" class="btn primary">بحث</button>
+                <button id="search-cancel" class="btn">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="logout-modal" class="custom-modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🚪 تسجيل الخروج</h3>
+            <p>هل أنت متأكد من تسجيل الخروج من CHAT ROOM؟</p>
+            <div class="modal-actions">
+                <button id="logout-yes" class="btn primary" style="background: #ff3333; border-color: #ff3333;">نعم، خروج</button>
+                <button id="logout-no" class="btn">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notif-modal" class="custom-modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🔔 الإشعارات</h3>
+            <div style="max-height: 200px; overflow-y: auto; text-align: right; margin-bottom: 15px;">
+                <p style="padding: 10px; border-bottom: 1px solid #3a2315; color: var(--text);">👋 مرحباً بك في CHAT ROOM!</p>
+                <p style="padding: 10px; border-bottom: 1px solid #3a2315; color: var(--text);">❤️ أعجب شخص بمنشورك.</p>
+                <p style="padding: 10px; color: var(--text);">💬 لديك رسالة جديدة من صديق.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="notif-close" class="btn primary">حسناً</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="script.js"></script>
-    
-    <!-- ربط التطبيق (PWA) -->
-    <link rel="manifest" href="./manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -154,29 +189,7 @@
                     .then(registration => console.log('ServiceWorker registered'))
                     .catch(err => console.log('ServiceWorker registration failed: ', err));
             });
-        }<!-- نافذة البحث المخصصة -->
-<div id="search-modal" class="custom-modal" style="display: none;">
-    <div class="modal-content">
-        <h3>🔍 البحث في المنشورات</h3>
-        <input type="text" id="search-input" placeholder="اكتب كلمة للبحث...">
-        <div class="modal-actions">
-            <button id="search-submit" class="btn primary">بحث</button>
-            <button id="search-cancel" class="btn">إلغاء</button>
-        </div>
-    </div>
-</div>
-
-<!-- نافذة تأكيد تسجيل الخروج المخصصة -->
-<div id="logout-modal" class="custom-modal" style="display: none;">
-    <div class="modal-content">
-        <h3>🚪 تسجيل الخروج</h3>
-        <p>هل أنت متأكد من تسجيل الخروج من CHAT ROOM؟</p>
-        <div class="modal-actions">
-            <button id="logout-yes" class="btn primary" style="background: #ff3333; border-color: #ff3333;">نعم، خروج</button>
-            <button id="logout-no" class="btn">إلغاء</button>
-        </div>
-    </div>
-</div>
+        }
     </script>
 </body>
 </html>
