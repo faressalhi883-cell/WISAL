@@ -92,66 +92,21 @@ main { padding: 15px; max-width: 760px; margin: 0 auto; }
 .info p { font-size: 12px; color: var(--muted); margin: 0 0 14px; flex: 1; }
 .play { display: block; text-align: center; text-decoration: none; background: linear-gradient(135deg,#a52af0,#6411a5); color: white; border: 1px solid #c96cff; border-radius: 12px; padding: 10px; font-weight: 800; font-size: 13px; }
 
-/* Overlays */
+/* Overlays & Modals */
 #lightning-overlay { position: fixed; inset: 0; background: #fff; pointer-events: none; z-index: 99999; opacity: 0; display: none; }
 #lightning-overlay.strike { display: block; animation: lightningStrike 0.4s ease-out forwards; }
 @keyframes lightningStrike { 0% { opacity: 0; } 20% { opacity: 1; background: #8b20e8; } 50% { opacity: 1; background: #ffd65a; } 100% { opacity: 0; background: transparent; } }
+
 .toast { position: fixed; z-index: 50; bottom: 90px; left: 50%; transform: translateX(-50%); background: #25140c; border: 1px solid var(--gold); padding: 10px 20px; border-radius: 10px; color: var(--gold); font-size: 13px; font-weight: bold; display: none; text-align: center; width: max-content; max-width: 90%; }
 .toast.show { display: block; animation: pop .3s ease; }
 @keyframes pop { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-/* --- النوافذ المخصصة (Custom Modals) --- */
-.custom-modal {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    z-index: 10000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.modal-content {
-    background: var(--panel);
-    border: 2px solid var(--gold);
-    border-radius: 20px;
-    padding: 20px;
-    width: 85%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 214, 90, 0.2);
-    animation: popIn 0.3s ease;
-}
-.modal-content h3 {
-    color: var(--gold);
-    margin-bottom: 15px;
-    font-size: 20px;
-}
-.modal-content p {
-    margin-bottom: 20px;
-    font-size: 15px;
-    line-height: 1.5;
-}
-.modal-content input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #5a3a24;
-    background: #170d09;
-    color: white;
-    margin-bottom: 20px;
-    outline: none;
-    font-size: 15px;
-}
-.modal-content input:focus {
-    border-color: var(--purple);
-}
-.modal-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-@keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
+/* Custom Modals */
+.custom-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 10000; display: flex; justify-content: center; align-items: center; }
+.modal-content { background: var(--panel); border: 2px solid var(--gold); border-radius: 20px; padding: 20px; width: 85%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 214, 90, 0.2); animation: popIn 0.3s ease; }
+.modal-content h3 { color: var(--gold); margin-bottom: 15px; font-size: 20px; }
+.modal-content p { margin-bottom: 20px; font-size: 15px; line-height: 1.5; }
+.modal-content input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #5a3a24; background: #170d09; color: white; margin-bottom: 20px; outline: none; font-size: 15px; }
+.modal-content input:focus { border-color: var(--purple); }
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
