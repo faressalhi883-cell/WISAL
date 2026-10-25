@@ -22,14 +22,13 @@
       <button class="iconbtn" id="notif-btn" aria-label="الإشعارات"><i class="uil uil-bell"></i></button>
     </div>
     <div class="header-brand"><h1>CHAT ROOM</h1><p>تواصل • تعرّف • أصدقاء جدد</p></div>
-    <div class="logo">US</div>
+    <div class="logo"><span id="logo-text">US</span></div>
   </div>
   <div class="quick">
-    <button type="button" onclick="document.getElementById('profile-pic-input').click()"><i class="uil uil-camera"></i><span>صورتي</span></button>
-    <input type="file" id="profile-pic-input" accept="image/*" hidden>
-    <button type="button" id="quick-search-btn"><i class="uil uil-search"></i><span>بحث</span></button>
-    <button type="button" id="share-btn"><i class="uil uil-share-alt"></i><span>مشاركة</span></button>
-    <button type="button" onclick="triggerLightning()"><i class="uil uil-bolt"></i><span>برق</span></button>
+    <button class="qa primary" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>حسابي</span></button>
+    <button class="qa" id="quick-search-btn"><i class="uil uil-search"></i><span>بحث</span></button>
+    <button class="qa" onclick="switchTab('games')"><i class="uil uil-game-structure"></i><span>ألعاب</span></button>
+    <button class="qa" id="share-btn"><i class="uil uil-share-alt"></i><span>مشاركة</span></button>
   </div>
 </header>
 
@@ -42,7 +41,7 @@
     <div class="actions">
       <input type="file" id="image-input" accept="image/*" hidden>
       <button type="button" class="btn" onclick="document.getElementById('image-input').click()"><i class="uil uil-image"></i> صورة</button>
-      <button type="button" class="btn primary" id="post-btn">نشر ✦</button>
+      <button type="button" class="btn primary" id="post-btn"><i class="uil uil-message"></i> نشر</button>
     </div>
     <div id="image-preview-container" hidden><img id="image-preview" src="" alt="معاينة"></div>
   </div>
@@ -78,6 +77,8 @@
     <img src="https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff" id="profile-page-avatar" class="profile-page-avatar" alt="">
     <h2 id="profile-page-name">اسم المستخدم</h2>
     <p id="profile-page-email" class="muted"></p>
+    <button class="btn" style="margin:12px auto 0" onclick="document.getElementById('profile-pic-input').click()"><i class="uil uil-camera"></i> تغيير الصورة</button>
+    <input type="file" id="profile-pic-input" accept="image/*" hidden>
     <div class="profile-stats"><div><strong id="profile-post-count">0</strong><span>منشور</span></div></div>
   </div>
   <h3 class="section-title">منشوراتي</h3>
@@ -105,12 +106,11 @@
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-home" onclick="switchTab('home')"><i class="uil uil-estate"></i><span>الرئيسية</span></button>
   <button class="nav-item" id="nav-friends" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i><span>الأصدقاء</span></button>
-  <button class="nav-item fab-btn" id="nav-games" onclick="switchTab('games')" aria-label="الألعاب"><i class="uil uil-game-structure"></i></button>
+  <button class="nav-item fab-btn" id="plus-btn" aria-label="منشور جديد"><i class="uil uil-plus"></i></button>
   <button class="nav-item" id="nav-chats" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i><span>الدردشة</span></button>
   <button class="nav-item" id="nav-profile" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>ملفي</span></button>
 </nav>
 
-<div id="lightning-overlay"></div>
 <div class="toast" id="toast"></div>
 
 <div id="search-modal" class="custom-modal" style="display:none"><div class="modal-content">
@@ -126,7 +126,7 @@
 
 <div id="notif-modal" class="custom-modal" style="display:none"><div class="modal-content">
   <h3>🔔 الإشعارات</h3>
-  <div id="notif-list"><p class="empty">لا توجد إشعارات جديدة.</p></div>
+  <p class="empty">لا توجد إشعارات جديدة.</p>
   <div class="modal-actions"><button id="notif-close" class="btn primary">حسناً</button></div>
 </div></div>
 
