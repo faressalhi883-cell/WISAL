@@ -19,7 +19,7 @@ const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=User&background=8b20e8&
 const $ = (id) => document.getElementById(id);
 
 let currentChatId = null, unsubMessages = null, unsubProfile = null, unsubPosts = null;
-const unsubComments = {}, unsubLikes = {};
+const unsubComments = {}, unsubLikes = {}, unsubCounts = {};
 
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
 function showToast(msg) { const t = $('toast'); if (!t) return; t.textContent = msg; t.classList.add('show'); clearTimeout(showToast.t); showToast.t = setTimeout(() => t.classList.remove('show'), 2800); }
@@ -34,8 +34,11 @@ function timeAgo(d) {
 }
 const emptyState = (t) => el('p', 'empty', t);
 const userName = (u) => u.displayName || u.email.split("@")[0];
+const avatarFor = (u) => u.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(userName(u))}&background=8b20e8&color=fff`;
 const show = (id) => $(id).style.display = 'flex';
 const hide = (id) => $(id).style.display = 'none';
+const getSaved = () => { try { return JSON.parse(localStorage.getItem('saved') || '[]'); } catch { return []; } };
+const setSaved = (a) => { try { localStorage.setItem('saved', JSON.stringify(a)); } catch {} };
 
 // التنقل
 const TABS = { home: 'home-section', chats: 'chats-section', friends: 'friends-section', profile: 'profile-section', games: 'games-section' };
@@ -49,10 +52,7 @@ window.switchTab = function (tab) {
   if (tab === 'profile') loadProfile();
   window.scrollTo({ top: 0 });
 };
-window.triggerLightning = function () {
-  const o = $('lightning-overlay'); if (!o) return;
-  o.classList.remove('strike'); void o.offsetWidth; o.classList.add('strike'); haptic([100, 50, 100]);
-};
+$('plus-btn').addEventListener('click', () => { switchTab('home'); setTimeout(() => $('create-post-input').focus(), 50); });
 
 // النوافذ
 $('menu-btn').addEventListener('click', () => show('logout-modal'));
@@ -61,7 +61,7 @@ $('logout-no').addEventListener('click', () => hide('logout-modal'));
 $('notif-btn').addEventListener('click', () => show('notif-modal'));
 $('notif-close').addEventListener('click', () => hide('notif-modal'));
 $('search-cancel').addEventListener('click', () => hide('search-modal'));
-const openSearch = () => { show('search-modal'); $('search-input').value = ''; $('search-input').focus(); };
+const openSearch = () => { switchTab('home'); show('search-modal'); $('search-input').value = ''; $('search-input').focus(); };
 $('top-search-btn').addEventListener('click', openSearch);
 $('quick-search-btn').addEventListener('click', openSearch);
 $('search-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') $('search-submit').click(); });
@@ -73,19 +73,22 @@ $('search-submit').addEventListener('click', () => {
   feeds.forEach(f => { const ok = !q || f.textContent.includes(q); f.style.display = ok ? '' : 'none'; if (ok) found++; });
   if (q && !found) { showToast("لا توجد منشورات تطابق بحثك"); feeds.forEach(f => f.style.display = ''); }
 });
-$('share-btn').addEventListener('click', async () => {
-  const data = { title: 'CHAT ROOM', text: 'انضم إلي في CHAT ROOM', url: location.origin + location.pathname.replace(/[^/]*$/, 'login.html') };
+async function shareLink(text) {
+  const data = { title: 'CHAT ROOM', text, url: location.origin + location.pathname.replace(/[^/]*$/, 'login.html') };
   try { if (navigator.share) await navigator.share(data); else { await navigator.clipboard.writeText(data.url); showToast("تم نسخ الرابط"); } } catch {}
-});
+}
+$('share-btn').addEventListener('click', () => shareLink('انضم إلي في CHAT ROOM'));
 
 // المصادقة
 onAuthStateChanged(auth, async (user) => {
   if (!user) { location.href = './login.html'; return; }
   try {
     const ref = doc(db, "users", user.uid);
-    if (!(await getDoc(ref)).exists()) await setDoc(ref, { uid: user.uid, name: userName(user), photoURL: user.photoURL || DEFAULT_AVATAR, createdAt: serverTimestamp() });
-    $('post-avatar').textContent = (userName(user)[0] || 'U').toUpperCase();
+    if (!(await getDoc(ref)).exists()) await setDoc(ref, { uid: user.uid, name: userName(user), photoURL: avatarFor(user), createdAt: serverTimestamp() });
   } catch (e) { console.log(e); }
+  const initial = (userName(user)[0] || 'U').toUpperCase();
+  $('post-avatar').textContent = initial;
+  $('logo-text').textContent = initial;
   if (!unsubPosts) loadPosts();
 });
 
@@ -124,14 +127,14 @@ postBtn.addEventListener('click', async () => {
   const text = postInput.value.trim(), file = imageInput.files[0], user = auth.currentUser;
   if (!user) return showToast("سجّل الدخول أولاً");
   if (!text && !file) return showToast("اكتب شيئاً أو اختر صورة");
-  postBtn.textContent = "..."; postBtn.disabled = true;
+  postBtn.disabled = true;
   try {
     const imageUrl = file ? await uploadImage(file) : "";
-    await addDoc(collection(db, "posts"), { uid: user.uid, text, imageUrl, author: userName(user), authorImage: user.photoURL || DEFAULT_AVATAR, createdAt: serverTimestamp() });
+    await addDoc(collection(db, "posts"), { uid: user.uid, text, imageUrl, author: userName(user), authorImage: avatarFor(user), createdAt: serverTimestamp() });
     postInput.value = ''; imageInput.value = ''; $('image-preview').src = ""; $('image-preview-container').hidden = true;
     haptic(15); showToast("تم النشر");
   } catch (e) { showToast(e.message || "حدث خطأ"); }
-  finally { postBtn.textContent = "نشر ✦"; postBtn.disabled = false; }
+  finally { postBtn.disabled = false; }
 });
 
 function skeletons(container, n = 3) {
@@ -162,21 +165,38 @@ function buildPost(postId, data) {
   }
 
   const uid = auth.currentUser.uid;
-  let liked = false, count = 0;
+  let liked = false, count = 0, cCount = 0;
+
   const likeBtn = el('button', 'act');
-  const paint = () => { likeBtn.classList.toggle('liked', liked); likeBtn.textContent = `${liked ? '❤️' : '🤍'} ${count || ''}`; };
+  const commentBtn = el('button', 'act');
+  const shareBtn = el('button', 'act'); shareBtn.innerHTML = '<i class="uil uil-share-alt"></i>';
+  const saveBtn = el('button', 'act save'); saveBtn.innerHTML = '<i class="uil uil-bookmark"></i>';
+  const paint = () => {
+    likeBtn.classList.toggle('liked', liked); likeBtn.textContent = `${liked ? '❤️' : '🤍'} ${count || ''}`;
+    commentBtn.innerHTML = `<i class="uil uil-comment-alt-message"></i> ${cCount || ''}`;
+  };
   paint();
+  saveBtn.classList.toggle('saved', getSaved().includes(postId));
+
   const likeRef = doc(db, "posts", postId, "likes", uid);
   unsubLikes[postId] = onSnapshot(collection(db, "posts", postId, "likes"), (s) => { count = s.size; liked = s.docs.some(d => d.id === uid); paint(); });
+  unsubCounts[postId] = onSnapshot(collection(db, "posts", postId, "comments"), (s) => { cCount = s.size; paint(); });
+
   likeBtn.onclick = async () => {
     const prev = { liked, count };
     liked = !liked; count += liked ? 1 : -1; paint(); haptic(10);
     try { liked ? await setDoc(likeRef, { createdAt: serverTimestamp() }) : await deleteDoc(likeRef); }
     catch { liked = prev.liked; count = prev.count; paint(); showToast("تعذّر تسجيل الإعجاب"); }
   };
+  shareBtn.onclick = () => shareLink((data.text || 'منشور').slice(0, 80));
+  saveBtn.onclick = () => {
+    let s = getSaved();
+    if (s.includes(postId)) { s = s.filter(x => x !== postId); showToast("أُزيل من المحفوظات"); }
+    else { s.push(postId); showToast("تم الحفظ على هذا الجهاز"); }
+    setSaved(s); saveBtn.classList.toggle('saved', s.includes(postId)); haptic(8);
+  };
 
-  const commentBtn = el('button', 'act'); commentBtn.innerHTML = '<i class="uil uil-comment-alt-message"></i> تعليق';
-  const actions = el('div', 'feed-actions'); actions.append(likeBtn, commentBtn);
+  const actions = el('div', 'feed-actions'); actions.append(likeBtn, commentBtn, shareBtn, saveBtn);
 
   const box = el('div', 'comments-box'); box.hidden = true;
   const list = el('div', 'comments-list');
@@ -220,7 +240,7 @@ function loadPosts() {
         const f = $(`post-${id}`), d = ch.doc.data();
         if (f && d.createdAt?.toDate) { f._date = d.createdAt.toDate(); f._time.textContent = timeAgo(f._date); }
       } else if (ch.type === "removed") {
-        $(`post-${id}`)?.remove(); unsubLikes[id]?.(); unsubComments[id]?.();
+        $(`post-${id}`)?.remove(); unsubLikes[id]?.(); unsubComments[id]?.(); unsubCounts[id]?.();
       }
     });
     container.querySelector('.empty')?.remove();
@@ -310,7 +330,7 @@ function loadProfile() {
   const user = auth.currentUser; if (!user) return;
   $('profile-page-name').textContent = userName(user);
   $('profile-page-email').textContent = user.email;
-  $('profile-page-avatar').src = user.photoURL || DEFAULT_AVATAR;
+  $('profile-page-avatar').src = avatarFor(user);
   $('profile-page-avatar').onerror = function () { this.onerror = null; this.src = DEFAULT_AVATAR; };
   const box = $('my-posts-container');
   unsubProfile?.();
