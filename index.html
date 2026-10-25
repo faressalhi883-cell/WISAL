@@ -1,195 +1,140 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHAT ROOM | Royal 3D</title>
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#160d09">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CHAT ROOM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+<link rel="stylesheet" href="./style.css">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#120b08">
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-    <header>
-        <div class="topline">
-            <div class="header-icons">
-                <button class="iconbtn" id="menu-btn"><i class="uil uil-bars"></i></button>
-                <button class="iconbtn" id="top-search-btn"><i class="uil uil-search"></i></button>
-                <button class="iconbtn" id="notif-btn"><i class="uil uil-bell"></i></button>
-            </div>
-            <div class="header-brand">
-                <h1>CHAT ROOM</h1>
-                <p>تواصل • تعرّف • أصدقاء جدد</p>
-            </div>
-            <div class="logo">US</div>
-        </div>
-
-        <div class="quick">
-            <button type="button" onclick="document.getElementById('profile-pic-input').click()">
-                <i class="uil uil-user sym"></i><span>حسابي</span>
-            </button>
-            <input type="file" id="profile-pic-input" accept="image/*" hidden>
-            
-            <button type="button" id="quick-search-btn"><i class="uil uil-search sym"></i><span>بحث</span></button>
-            <a href="https://wa.me/" target="_blank"><i class="uil uil-whatsapp sym"></i><span>واتساب</span></a>
-            <button type="button" onclick="triggerLightning()"><i class="uil uil-eye sym"></i><span>رؤية</span></button>
-        </div>
-    </header>
-
-    <div class="tabs">
-        <button id="tab-home" class="active" onclick="switchTab('home')"><i class="uil uil-estate"></i></button>
-        <button id="tab-chats" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i></button>
-        <button id="tab-friends" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i></button>
-        <button id="tab-games" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
+<header>
+  <div class="topline">
+    <div class="header-icons">
+      <button class="iconbtn" id="menu-btn" aria-label="القائمة"><i class="uil uil-bars"></i></button>
+      <button class="iconbtn" id="top-search-btn" aria-label="بحث"><i class="uil uil-search"></i></button>
+      <button class="iconbtn" id="notif-btn" aria-label="الإشعارات"><i class="uil uil-bell"></i></button>
     </div>
+    <div class="header-brand"><h1>CHAT ROOM</h1><p>تواصل • تعرّف • أصدقاء جدد</p></div>
+    <div class="logo">US</div>
+  </div>
+  <div class="quick">
+    <button type="button" onclick="document.getElementById('profile-pic-input').click()"><i class="uil uil-camera"></i><span>صورتي</span></button>
+    <input type="file" id="profile-pic-input" accept="image/*" hidden>
+    <button type="button" id="quick-search-btn"><i class="uil uil-search"></i><span>بحث</span></button>
+    <button type="button" id="share-btn"><i class="uil uil-share-alt"></i><span>مشاركة</span></button>
+    <button type="button" onclick="triggerLightning()"><i class="uil uil-bolt"></i><span>برق</span></button>
+  </div>
+</header>
 
-    <main id="home-section" style="display: block;">
-        <div class="composer">
-            <div class="compose-top">
-                <div class="avatar" id="post-avatar">US</div>
-                <input type="text" id="create-post-input" placeholder="بم تفكر؟" maxlength="500">
-            </div>
-            <div class="actions">
-                <input type="file" id="image-input" accept="image/*" hidden>
-                <button type="button" class="btn" onclick="document.getElementById('image-input').click()"><i class="uil uil-image"></i> صورة</button>
-                <button type="button" class="btn primary" id="post-btn">نشر ✦</button>
-            </div>
-            <div id="image-preview-container" hidden style="margin-top:10px;">
-                <img id="image-preview" src="" style="width:100%; border-radius:12px;" alt="Preview">
-            </div>
-        </div>
-        <div class="section-title"><span>آخر المنشورات</span></div>
-        <div id="feeds-container" class="feeds-list"></div>
-    </main>
-
-    <main id="chats-section" style="display: none;">
-        <div id="chat-list-view">
-            <h3 class="section-title">المحادثات</h3>
-            <div id="users-container"></div>
-        </div>
-        <div id="chat-room-view">
-            <div class="chat-header">
-                <button onclick="closeChatRoom()" class="iconbtn"><i class="uil uil-arrow-right"></i></button>
-                <h4 id="chat-with-name">محادثة</h4>
-            </div>
-            <div id="messages-container"></div>
-            <div class="chat-input-area">
-                <input type="text" id="message-input" placeholder="اكتب رسالة...">
-                <button id="send-message-btn" class="btn primary">إرسال</button>
-            </div>
-        </div>
-    </main>
-
-    <main id="friends-section" style="display: none;">
-        <h3 class="section-title">الأصدقاء</h3>
-        <div id="friends-container" class="feeds-list"></div>
-    </main>
-
-    <main id="profile-section" style="display: none;">
-        <div class="profile-card">
-            <img src="https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff" id="profile-page-avatar" class="profile-page-avatar" onerror="this.src='https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff'">
-            <h2 id="profile-page-name">اسم المستخدم</h2>
-            <p id="profile-page-email" style="color: var(--muted); font-size: 13px;">البريد الإلكتروني</p>
-            <div class="profile-stats">
-                <div><strong id="profile-post-count">0</strong><br><span>منشور</span></div>
-                <div><strong>0</strong><br><span>صديق</span></div>
-            </div>
-        </div>
-        <h3 class="section-title" style="margin-top: 20px;">منشوراتي</h3>
-        <div id="my-posts-container" class="feeds-list"></div>
-    </main>
-
-    <main id="games-section" style="display: none;">
-        <section class="intro">
-            <h1>🎮 ألعاب مجانية</h1>
-            <p>اختر فئة والعب مباشرة من المتصفح.</p>
-        </section>
-        <input class="search" id="search" type="search" placeholder="ابحث عن فئة...">
-        <nav class="filters">
-            <button class="filter active" data-category="all">الكل</button>
-            <button class="filter" data-category="cars">🚗 سيارات</button>
-            <button class="filter" data-category="flight">✈️ طيران</button>
-            <button class="filter" data-category="brain">🧠 ألغاز</button>
-            <button class="filter" data-category="action">⚡ أكشن</button>
-        </nav>
-        <section class="grid" id="games">
-            <article class="game" data-category="cars" data-search="سيارات قيادة سباق car racing driving">
-                <div class="art">🏎️</div>
-                <div class="info"><h2>السيارات والقيادة</h2><p>سباقات وقيادة ومواقف سيارات.</p><a class="play" href="https://poki.com/en/car" target="_blank">العب مجانًا ↗</a></div>
-            </article>
-            <article class="game" data-category="flight" data-search="طيران طائرات airplane flight simulator">
-                <div class="art">✈️</div>
-                <div class="info"><h2>الطيران والطائرات</h2><p>اكتشف ألعاب الطيران والمحاكاة.</p><a class="play" href="https://www.crazygames.com/t/airplane" target="_blank">اكتشف ↗</a></div>
-            </article>
-            <article class="game" data-category="brain" data-search="ذكاء ألغاز puzzle brain logic">
-                <div class="art">🧩</div>
-                <div class="info"><h2>الذكاء والألغاز</h2><p>حل الألغاز واختبر المنطق.</p><a class="play" href="https://poki.com/en/puzzle" target="_blank">العب ↗</a></div>
-            </article>
-            <article class="game" data-category="action" data-search="أكشن مغامرة action adventure">
-                <div class="art">⚡</div>
-                <div class="info"><h2>الأكشن والمغامرة</h2><p>ألعاب حركة ومهارة.</p><a class="play" href="https://poki.com/en/action" target="_blank">اكتشف ↗</a></div>
-            </article>
-        </section>
-    </main>
-
-    <nav class="bottom-nav">
-        <button class="nav-item active" id="nav-home" onclick="switchTab('home')"><i class="uil uil-estate"></i><span>الرئيسية</span></button>
-        <button class="nav-item" id="nav-friends" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i><span>الأصدقاء</span></button>
-        <button class="nav-item fab-btn" id="nav-games" onclick="switchTab('games')"><i class="uil uil-game-structure"></i></button>
-        <button class="nav-item" id="nav-chats" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i><span>الدردشة</span></button>
-        <button class="nav-item" id="nav-profile" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>ملفي</span></button>
-    </nav>
-
-    <div id="lightning-overlay"></div>
-    <div class="toast" id="toast"></div>
-
-    <!-- النوافذ المخصصة -->
-    <div id="search-modal" class="custom-modal" style="display: none;">
-        <div class="modal-content">
-            <h3>🔍 البحث في المنشورات</h3>
-            <input type="text" id="search-input" placeholder="اكتب كلمة للبحث...">
-            <div class="modal-actions">
-                <button id="search-submit" class="btn primary">بحث</button>
-                <button id="search-cancel" class="btn">إلغاء</button>
-            </div>
-        </div>
+<main id="home-section" style="display:block">
+  <div class="composer">
+    <div class="compose-top">
+      <div class="avatar" id="post-avatar">US</div>
+      <input type="text" id="create-post-input" placeholder="بم تفكر؟" maxlength="500">
     </div>
-
-    <div id="logout-modal" class="custom-modal" style="display: none;">
-        <div class="modal-content">
-            <h3>🚪 تسجيل الخروج</h3>
-            <p>هل أنت متأكد من تسجيل الخروج من CHAT ROOM؟</p>
-            <div class="modal-actions">
-                <button id="logout-yes" class="btn primary" style="background: #ff3333; border-color: #ff3333;">نعم، خروج</button>
-                <button id="logout-no" class="btn">إلغاء</button>
-            </div>
-        </div>
+    <div class="actions">
+      <input type="file" id="image-input" accept="image/*" hidden>
+      <button type="button" class="btn" onclick="document.getElementById('image-input').click()"><i class="uil uil-image"></i> صورة</button>
+      <button type="button" class="btn primary" id="post-btn">نشر ✦</button>
     </div>
+    <div id="image-preview-container" hidden><img id="image-preview" src="" alt="معاينة"></div>
+  </div>
+  <div class="section-title"><span>آخر المنشورات</span></div>
+  <div id="feeds-container" class="feeds-list"></div>
+</main>
 
-    <div id="notif-modal" class="custom-modal" style="display: none;">
-        <div class="modal-content">
-            <h3>🔔 الإشعارات</h3>
-            <div style="max-height: 200px; overflow-y: auto; text-align: right; margin-bottom: 15px;">
-                <p style="padding: 10px; border-bottom: 1px solid #3a2315; color: var(--text);">👋 مرحباً بك في CHAT ROOM!</p>
-                <p style="padding: 10px; border-bottom: 1px solid #3a2315; color: var(--text);">❤️ أعجب شخص بمنشورك.</p>
-                <p style="padding: 10px; color: var(--text);">💬 لديك رسالة جديدة من صديق.</p>
-            </div>
-            <div class="modal-actions">
-                <button id="notif-close" class="btn primary">حسناً</button>
-            </div>
-        </div>
+<main id="chats-section" style="display:none">
+  <div id="chat-list-view">
+    <h3 class="section-title">المحادثات</h3>
+    <div id="users-container"></div>
+  </div>
+  <div id="chat-room-view">
+    <div class="chat-header">
+      <button onclick="closeChatRoom()" class="iconbtn" aria-label="رجوع"><i class="uil uil-arrow-right"></i></button>
+      <h4 id="chat-with-name">محادثة</h4>
     </div>
+    <div id="messages-container"></div>
+    <div class="chat-input-area">
+      <input type="text" id="message-input" placeholder="اكتب رسالة..." maxlength="1000">
+      <button id="send-message-btn" class="btn primary">إرسال</button>
+    </div>
+  </div>
+</main>
 
-    <script type="module" src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => console.log('ServiceWorker registered'))
-                    .catch(err => console.log('ServiceWorker registration failed: ', err));
-            });
-        }
-    </script>
+<main id="friends-section" style="display:none">
+  <h3 class="section-title">الأصدقاء</h3>
+  <div id="friends-container"></div>
+</main>
+
+<main id="profile-section" style="display:none">
+  <div class="profile-card">
+    <img src="https://ui-avatars.com/api/?name=User&background=8b20e8&color=fff" id="profile-page-avatar" class="profile-page-avatar" alt="">
+    <h2 id="profile-page-name">اسم المستخدم</h2>
+    <p id="profile-page-email" class="muted"></p>
+    <div class="profile-stats"><div><strong id="profile-post-count">0</strong><span>منشور</span></div></div>
+  </div>
+  <h3 class="section-title">منشوراتي</h3>
+  <div id="my-posts-container" class="feeds-list"></div>
+</main>
+
+<main id="games-section" style="display:none">
+  <section class="intro"><h1>🎮 ألعاب مجانية</h1><p>اختر فئة والعب مباشرة من المتصفح.</p></section>
+  <input class="search" id="search" type="search" placeholder="ابحث عن فئة...">
+  <nav class="filters">
+    <button class="filter active" data-category="all">الكل</button>
+    <button class="filter" data-category="cars">🚗 سيارات</button>
+    <button class="filter" data-category="flight">✈️ طيران</button>
+    <button class="filter" data-category="brain">🧠 ألغاز</button>
+    <button class="filter" data-category="action">⚡ أكشن</button>
+  </nav>
+  <section class="grid" id="games">
+    <article class="game" data-category="cars" data-search="سيارات قيادة سباق car racing"><div class="art">🏎️</div><div class="info"><h2>السيارات والقيادة</h2><p>سباقات وقيادة ومواقف.</p><a class="play" href="https://poki.com/en/car" target="_blank" rel="noopener">العب مجانًا</a></div></article>
+    <article class="game" data-category="flight" data-search="طيران طائرات airplane flight"><div class="art">✈️</div><div class="info"><h2>الطيران</h2><p>ألعاب الطيران والمحاكاة.</p><a class="play" href="https://www.crazygames.com/t/airplane" target="_blank" rel="noopener">اكتشف</a></div></article>
+    <article class="game" data-category="brain" data-search="ذكاء ألغاز puzzle brain"><div class="art">🧩</div><div class="info"><h2>الذكاء والألغاز</h2><p>حل الألغاز واختبر المنطق.</p><a class="play" href="https://poki.com/en/puzzle" target="_blank" rel="noopener">العب</a></div></article>
+    <article class="game" data-category="action" data-search="أكشن مغامرة action adventure"><div class="art">⚡</div><div class="info"><h2>الأكشن</h2><p>ألعاب حركة ومهارة.</p><a class="play" href="https://poki.com/en/action" target="_blank" rel="noopener">اكتشف</a></div></article>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-home" onclick="switchTab('home')"><i class="uil uil-estate"></i><span>الرئيسية</span></button>
+  <button class="nav-item" id="nav-friends" onclick="switchTab('friends')"><i class="uil uil-users-alt"></i><span>الأصدقاء</span></button>
+  <button class="nav-item fab-btn" id="nav-games" onclick="switchTab('games')" aria-label="الألعاب"><i class="uil uil-game-structure"></i></button>
+  <button class="nav-item" id="nav-chats" onclick="switchTab('chats')"><i class="uil uil-comment-alt-message"></i><span>الدردشة</span></button>
+  <button class="nav-item" id="nav-profile" onclick="switchTab('profile')"><i class="uil uil-user"></i><span>ملفي</span></button>
+</nav>
+
+<div id="lightning-overlay"></div>
+<div class="toast" id="toast"></div>
+
+<div id="search-modal" class="custom-modal" style="display:none"><div class="modal-content">
+  <h3>🔍 البحث في المنشورات</h3>
+  <input type="text" id="search-input" placeholder="اكتب كلمة للبحث...">
+  <div class="modal-actions"><button id="search-submit" class="btn primary">بحث</button><button id="search-cancel" class="btn">إلغاء</button></div>
+</div></div>
+
+<div id="logout-modal" class="custom-modal" style="display:none"><div class="modal-content">
+  <h3>🚪 تسجيل الخروج</h3><p>هل تريد تسجيل الخروج من CHAT ROOM؟</p>
+  <div class="modal-actions"><button id="logout-yes" class="btn danger">خروج</button><button id="logout-no" class="btn">إلغاء</button></div>
+</div></div>
+
+<div id="notif-modal" class="custom-modal" style="display:none"><div class="modal-content">
+  <h3>🔔 الإشعارات</h3>
+  <div id="notif-list"><p class="empty">لا توجد إشعارات جديدة.</p></div>
+  <div class="modal-actions"><button id="notif-close" class="btn primary">حسناً</button></div>
+</div></div>
+
+<script type="module" src="./script.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
 </body>
 </html>
